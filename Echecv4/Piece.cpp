@@ -24,18 +24,11 @@ bool Piece::deplacement(int X, int Y)
 	return false;
 }
 
-int Piece::getId() {
+int Piece::getId(){
     return this->_id;
 }
-void Piece::setId(int nouvelleValeur) {
+void Piece::setId(int nouvelleValeur){
     this->_id = nouvelleValeur;
-}
-
-EchecPieceEnum Piece::getType() {
-    return this->_type;
-}
-void Piece::setType(EchecPieceEnum nouvelleValeur) {
-    this->_type = nouvelleValeur;
 }
 
 int Piece::getPositionX(){

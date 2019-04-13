@@ -13,11 +13,9 @@ Tour::Tour(int id, int positionX, int positionY, bool blanc):Piece(id, positionX
     this->_enJeu = true;
 
     if (!blanc){
-        this->_nom = "tn ";
-        this->_type = pieceTourNoir;
+        this->_nom = "tn";
     } else {
-        this->_nom = "tn ";
-        this->_type = pieceTourBlanc;
+        this->_nom = "tb";
     }
 }
 

@@ -10,10 +10,8 @@ Fou::Fou(int id, int positionX, int positionY, bool blanc):Piece(id, positionX, 
 
     if (!blanc){
         this->_nom = "fou_n";
-        this->_type = pieceFouNoir;
     } else {
         this->_nom = "fou_b";
-        this->_type = pieceFouBlanc;
     }
 }
 

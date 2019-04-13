@@ -10,10 +10,8 @@ Roi::Roi(int id, int positionX, int positionY, bool blanc):Piece(id, positionX, 
 
     if (!blanc){
         this->_nom = "roi_n";
-        this->_type = pieceRoiNoir;
     } else {
         this->_nom = "roi_b";
-        this->_type = pieceRoiBlanc;
     }
 }
 

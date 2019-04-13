@@ -5,24 +5,6 @@
 
 using namespace std;
 
-typedef enum _EchecPieceEnum {
-    pieceNone,
-    pieceTourBlanc,
-    pieceRoiBlanc,
-    pieceReineBlanc,
-    pieceFouBlanc,
-    pieceCavalierBlanc,
-    pieceRookBlanc,
-    piecePionBlanc,
-    pieceTourNoir,
-    pieceRoiNoir,
-    pieceReineNoir,
-    pieceFouNoir,
-    pieceCavalierNoir,
-    pieceRookNoir,
-    piecePionNoir,
-}EchecPieceEnum;
-
 class Piece {
 protected:
     int _id;
@@ -30,7 +12,6 @@ protected:
     bool _blanc;
     bool _enJeu;
     string _nom;
-    EchecPieceEnum _type;
 
 public:
     Piece();
@@ -46,9 +27,6 @@ public:
 
     int getId();
     void setId(int newValue);
-
-    EchecPieceEnum getType();
-    void setType(EchecPieceEnum newValue);
 
     virtual int getPositionX();
     virtual int getPositionY();
