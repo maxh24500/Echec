@@ -196,62 +196,40 @@ void ChessWindow::setPiece(int row, int column, Piece *piece)
     QPushButton *b = Board[row][column];
     QIcon &icon=PieceUnknown;
 
-    switch(piece->getType())
-    {
-    case pieceNone:
-        icon = PieceNone;
-        break;
+    std::string nom = piece->getNom();
 
-    case pieceTourNoir:
-        icon = BlackCastle;
-        break;
-
-    case pieceCavalierNoir:
-        icon = BlackHorse;
-        break;
-
-    case pieceRoiNoir:
-        icon = BlackKing;
-        break;
-
-    case piecePionNoir:
+    if (nom == "pio_n")
         icon = BlackPawn;
-        break;
-
-    case pieceReineNoir:
+    else if (nom == "cav_n")
+        icon = BlackHorse;
+    else if (nom == "tn")
+        icon = BlackCastle;
+    else if (nom == "roi_n")
+        icon = BlackKing;
+    else if (nom == "rei_n")
         icon = BlackQueen;
-        break;
-
-    case pieceFouNoir:
+    else if (nom == "fou_n")
         icon = BlackBishop;
-        break;
-    case pieceTourBlanc:
-          icon = WhiteCastle;
-          break;
-
-      case pieceCavalierBlanc:
-          icon = WhiteHorse;
-          break;
-
-      case pieceRoiBlanc:
-          icon = WhiteKing;
-          break;
-
-      case piecePionBlanc:
-          icon = WhitePawn;
-          break;
-
-      case pieceReineBlanc:
-          icon = WhiteQueen;
-          break;
-
-      case pieceFouBlanc:
-          icon = WhiteBishop;
-          break;
-default:
-        printf("Unknown %d %s\n",piece->getType(), piece->getNom().c_str());
+    else if (nom == "pio_b")
+        icon = WhitePawn;
+    else if (nom == "cav_b")
+        icon = WhiteHorse;
+    else if (nom == "tb")
+        icon = WhiteCastle;
+    else if (nom == "roi_b")
+        icon = WhiteKing;
+    else if (nom == "rei_b")
+        icon = WhiteQueen;
+    else if (nom == "fou_b")
+        icon = WhiteBishop;
+    else if (nom.empty())
+        icon = PieceNone;
+    else
+    {
+        printf("Unknown %s\n",piece->getNom().c_str());
         icon = PieceUnknown;
     }
+
     b->setIcon(icon);
     b->setIconSize(QSize(150,150));
 }
@@ -282,7 +260,7 @@ void ChessWindow::on_buttonClicked()
                 {
                     QPushButton *b = Board[r][c];
                     bool canMove = laPiece1->deplacement(r,c);
-                    if (echec.getPiece(r,c)->getType() != pieceNone)
+                    if (echec.getPiece(r,c)->getNom() != "")
                         if (!echec.canTake(laPiece1, r,c))
                             canMove = false;
 
