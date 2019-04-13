@@ -93,8 +93,8 @@ void EchecInterface::SetupBoard()
     Tour *tb1 = new Tour(24, 0, 0, true);
     appelTableau->listePiece[0][0] = tb1;
 
-    Tour *tb2 = new Tour(25, 4, 5, true);
-    appelTableau->listePiece[4][5] = tb2;
+    Tour *tb2 = new Tour(25, 0, 7, true);
+    appelTableau->listePiece[0][7] = tb2;
 
     Cavalier *cb1 = new Cavalier(26, 0, 1, true);
     appelTableau->listePiece[0][1] = cb1;
