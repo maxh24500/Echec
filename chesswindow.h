@@ -44,6 +44,8 @@ private:
     QIcon WhitePawn;
     QIcon WhiteQueen;
     QIcon WhiteRook;
+    QIcon PieceUnknown;
+
     class QPushButton* Board[8][8];
     void setPiece(int row, int column, ChessPieceEnum piece);
     QPoint addSquare(QPoint pos, class QPushButton *b);

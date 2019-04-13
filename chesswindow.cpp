@@ -15,7 +15,8 @@ ChessWindow::ChessWindow(QWidget *parent) :
     WhiteKing(QPixmap(":/pieces/WhiteKing.png")),
     WhitePawn(QPixmap(":/pieces/WhitePawn.png")),
     WhiteQueen(QPixmap(":/pieces/WhiteQueen.png")),
-    WhiteRook(QPixmap(":/pieces/WhiteRook.png"))
+    WhiteRook(QPixmap(":/pieces/WhiteRook.png")),
+    PieceUnknown(QPixmap(":/pieces/PieceUnknown.png"))
 {
     ui->setupUi(this);
     QPoint bpos(0,0);
@@ -91,10 +92,42 @@ ChessWindow::ChessWindow(QWidget *parent) :
     bpos = addSquare(bpos, ui->H_7);
     bpos = addSquare(bpos, ui->H_8);
 
-    setPiece(0,0, pieceBlackHorse);
-    setPiece(0,1, pieceBlackCastle);
 
-    setPiece(7,0, pieceWhiteHorse);
+    setPiece(0,0, pieceBlackCastle);
+    setPiece(0,1, pieceBlackHorse);
+    setPiece(0,2, pieceBlackRook);
+    setPiece(0,3, pieceBlackKing);
+    setPiece(0,4, pieceBlackQueen);
+    setPiece(0,5, pieceBlackRook);
+    setPiece(0,6, pieceBlackHorse);
+    setPiece(0,7, pieceBlackCastle);
+
+    setPiece(1,0, pieceBlackPawn);
+    setPiece(1,1, pieceBlackPawn);
+    setPiece(1,2, pieceBlackPawn);
+    setPiece(1,3, pieceBlackPawn);
+    setPiece(1,4, pieceBlackPawn);
+    setPiece(1,5, pieceBlackPawn);
+    setPiece(1,6, pieceBlackPawn);
+    setPiece(1,7, pieceBlackPawn);
+
+
+    setPiece(6,0, pieceWhitePawn);
+    setPiece(6,1, pieceWhitePawn);
+    setPiece(6,2, pieceWhitePawn);
+    setPiece(6,3, pieceWhitePawn);
+    setPiece(6,4, pieceWhitePawn);
+    setPiece(6,5, pieceWhitePawn);
+    setPiece(6,6, pieceWhitePawn);
+    setPiece(6,7, pieceWhitePawn);
+
+    setPiece(7,0, pieceWhiteCastle);
+    setPiece(7,1, pieceWhiteHorse);
+    setPiece(7,2, pieceWhiteRook);
+    setPiece(7,3, pieceWhiteKing);
+    setPiece(7,4, pieceWhiteQueen);
+    setPiece(7,5, pieceWhiteRook);
+    setPiece(7,6, pieceWhiteHorse);
     setPiece(7,7, pieceWhiteCastle);
 
 }
@@ -120,21 +153,58 @@ QPoint ChessWindow::addSquare(QPoint pos, class QPushButton *b)
 void ChessWindow::setPiece(int row, int column, ChessPieceEnum piece)
 {
     QPushButton *b = Board[row][column];
-    QIcon &icon=BlackKing;
+    QIcon &icon=PieceUnknown;
     switch(piece)
     {
     case pieceBlackCastle:
         icon = BlackCastle;
         break;
+
     case pieceBlackHorse:
         icon = BlackHorse;
         break;
-    case pieceWhiteHorse:
-        icon = WhiteHorse;
+
+    case pieceBlackKing:
+        icon = BlackKing;
         break;
+
+    case pieceBlackPawn:
+        icon = BlackPawn;
+        break;
+
+    case pieceBlackQueen:
+        icon = BlackQueen;
+        break;
+
+    case pieceBlackRook:
+        icon = BlackRook;
+        break;
+
     case pieceWhiteCastle:
         icon = WhiteCastle;
         break;
+
+    case pieceWhiteHorse:
+        icon = WhiteHorse;
+        break;
+
+    case pieceWhiteKing:
+        icon = WhiteKing;
+        break;
+
+    case pieceWhitePawn:
+        icon = WhitePawn;
+        break;
+
+    case pieceWhiteQueen:
+        icon = WhiteQueen;
+        break;
+
+    case pieceWhiteRook:
+        icon = WhiteRook;
+        break;
+default:
+        icon = PieceUnknown;
     }
     b->setIcon(icon);
     b->setIconSize(QSize(150,150));
