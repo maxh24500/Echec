@@ -10,8 +10,10 @@ Reine::Reine(int id, int positionX, int positionY, bool blanc):Piece(id, positio
 
     if (!blanc){
         this->_nom = "rei_n";
+        this->_type = pieceReineNoir;
     } else {
         this->_nom = "rei_b";
+        this->_type = pieceReineBlanc;
     }
 }
 

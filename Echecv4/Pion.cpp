@@ -9,8 +9,10 @@ Pion::Pion(int id, int positionX, int positionY, bool blanc):Piece(id, positionX
     this->_enJeu = true;
 
     if (!blanc){
+        this->_type = piecePionNoir;
         this->_nom = "pio_n";
     } else {
+        this->_type = piecePionBlanc;
         this->_nom = "pio_b";
     }
 }

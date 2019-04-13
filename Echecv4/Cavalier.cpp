@@ -10,8 +10,10 @@ Cavalier::Cavalier(int id, int positionX, int positionY, bool blanc):Piece(id, p
 
     if (!blanc){
         this->_nom = "cav_n";
+        this->_type = pieceCavalierNoir;
     } else {
         this->_nom = "cav_b";
+        this->_type = pieceCavalierBlanc;
     }
 }
 
