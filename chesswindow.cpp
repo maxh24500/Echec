@@ -19,6 +19,16 @@ ChessWindow::ChessWindow(QWidget *parent) :
     PieceUnknown(QPixmap(":/pieces/PieceUnknown.png"))
 {
     ui->setupUi(this);
+
+    QColor col = QColor(Qt::blue);
+    if(col.isValid()) {
+       blackSquareStyle = QString("background-color: %1").arg(col.name());
+    }
+    col = QColor(Qt::yellow);
+    if(col.isValid()) {
+       whiteSquareStyle = QString("background-color: %1").arg(col.name());
+    }
+
     QPoint bpos(0,0);
     bpos = addSquare(bpos, ui->A_1);
     bpos = addSquare(bpos, ui->A_2);
@@ -141,6 +151,22 @@ QPoint ChessWindow::addSquare(QPoint pos, class QPushButton *b)
     int x = pos.x();
     int y = pos.y();
     printf("add %d %d \n",x,y);
+
+    // colour the squares
+    if (y % 2){
+        if (x %2)
+            b->setStyleSheet(blackSquareStyle);
+        else
+            b->setStyleSheet(whiteSquareStyle);
+    }
+    else
+    {
+        if (x %2)
+            b->setStyleSheet(whiteSquareStyle);
+        else
+            b->setStyleSheet(blackSquareStyle);
+
+    }
     Board[y][x] = b;
     x++;
     if (x > 7)
