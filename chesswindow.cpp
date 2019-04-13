@@ -9,17 +9,19 @@ ChessWindow::ChessWindow(QWidget *parent) :
     BlackKing(QPixmap(":/pieces/BlackKing.png")),
     BlackPawn(QPixmap(":/pieces/BlackPawn.png")),
     BlackQueen(QPixmap(":/pieces/BlackQueen.png")),
-    BlackRook(QPixmap(":/pieces/BlackRook.png")),
+    BlackBishop(QPixmap(":/pieces/BlackBishop.png")),
     WhiteCastle(QPixmap(":/pieces/WhiteCastle.png")),
     WhiteHorse(QPixmap(":/pieces/WhiteHorse.png")),
     WhiteKing(QPixmap(":/pieces/WhiteKing.png")),
     WhitePawn(QPixmap(":/pieces/WhitePawn.png")),
     WhiteQueen(QPixmap(":/pieces/WhiteQueen.png")),
-    WhiteRook(QPixmap(":/pieces/WhiteRook.png")),
-    PieceUnknown(QPixmap(":/pieces/PieceUnknown.png"))
+    WhiteBishop(QPixmap(":/pieces/WhiteBishop.png")),
+    PieceUnknown(QPixmap(":/pieces/PieceUnknown.png")),
+    PieceNone(QPixmap(":/pieces/PieceNone.png"))
 {
     ui->setupUi(this);
 
+    echec.SetupBoard();
        blackSquareStyle = getStyleSheetForColour(QColor(Qt::darkGray));
        whiteSquareStyle = getStyleSheetForColour(QColor(Qt::lightGray));
 
@@ -96,45 +98,58 @@ ChessWindow::ChessWindow(QWidget *parent) :
     bpos = addSquare(bpos, ui->H_7);
     bpos = addSquare(bpos, ui->H_8);
 
+for(int row = 0; row < 8; row++)
+{
+    for(int col = 0; col < 8; col++)
+    {
+        Piece *p = echec.getPiece(row, col);
+        setPiece(row,col, p);
+    }
+}
+//    setPiece(0,0, pieceBlackCastle);
+//    setPiece(0,1, pieceBlackHorse);
+//    setPiece(0,2, pieceBlackRook);
+//    setPiece(0,3, pieceBlackKing);
+//    setPiece(0,4, pieceBlackQueen);
+//    setPiece(0,5, pieceBlackRook);
+//    setPiece(0,6, pieceBlackHorse);
+//    setPiece(0,7, pieceBlackCastle);
 
-    setPiece(0,0, pieceBlackCastle);
-    setPiece(0,1, pieceBlackHorse);
-    setPiece(0,2, pieceBlackRook);
-    setPiece(0,3, pieceBlackKing);
-    setPiece(0,4, pieceBlackQueen);
-    setPiece(0,5, pieceBlackRook);
-    setPiece(0,6, pieceBlackHorse);
-    setPiece(0,7, pieceBlackCastle);
-
-    setPiece(1,0, pieceBlackPawn);
-    setPiece(1,1, pieceBlackPawn);
-    setPiece(1,2, pieceBlackPawn);
-    setPiece(1,3, pieceBlackPawn);
-    setPiece(1,4, pieceBlackPawn);
-    setPiece(1,5, pieceBlackPawn);
-    setPiece(1,6, pieceBlackPawn);
-    setPiece(1,7, pieceBlackPawn);
+//    setPiece(1,0, pieceBlackPawn);
+//    setPiece(1,1, pieceBlackPawn);
+//    setPiece(1,2, pieceBlackPawn);
+//    setPiece(1,3, pieceBlackPawn);
+//    setPiece(1,4, pieceBlackPawn);
+//    setPiece(1,5, pieceBlackPawn);
+//    setPiece(1,6, pieceBlackPawn);
+//    setPiece(1,7, pieceBlackPawn);
 
 
-    setPiece(6,0, pieceWhitePawn);
-    setPiece(6,1, pieceWhitePawn);
-    setPiece(6,2, pieceWhitePawn);
-    setPiece(6,3, pieceWhitePawn);
-    setPiece(6,4, pieceWhitePawn);
-    setPiece(6,5, pieceWhitePawn);
-    setPiece(6,6, pieceWhitePawn);
-    setPiece(6,7, pieceWhitePawn);
+//    setPiece(6,0, pieceWhitePawn);
+//    setPiece(6,1, pieceWhitePawn);
+//    setPiece(6,2, pieceWhitePawn);
+//    setPiece(6,3, pieceWhitePawn);
+//    setPiece(6,4, pieceWhitePawn);
+//    setPiece(6,5, pieceWhitePawn);
+//    setPiece(6,6, pieceWhitePawn);
+//    setPiece(6,7, pieceWhitePawn);
 
-    setPiece(7,0, pieceWhiteCastle);
-    setPiece(7,1, pieceWhiteHorse);
-    setPiece(7,2, pieceWhiteRook);
-    setPiece(7,3, pieceWhiteKing);
-    setPiece(7,4, pieceWhiteQueen);
-    setPiece(7,5, pieceWhiteRook);
-    setPiece(7,6, pieceWhiteHorse);
-    setPiece(7,7, pieceWhiteCastle);
+//    setPiece(7,0, pieceWhiteCastle);
+//    setPiece(7,1, pieceWhiteHorse);
+//    setPiece(7,2, pieceWhiteRook);
+//    setPiece(7,3, pieceWhiteKing);
+//    setPiece(7,4, pieceWhiteQueen);
+//    setPiece(7,5, pieceWhiteRook);
+//    setPiece(7,6, pieceWhiteHorse);
+//    setPiece(7,7, pieceWhiteCastle);
 
 }
+
+ChessWindow::~ChessWindow()
+{
+    delete ui;
+}
+
 QString ChessWindow::getStyleSheetForColour(QColor &color)
 {
     QString style = "QPushButton:pressed {\n";
@@ -173,10 +188,7 @@ QString ChessWindow::getStyleSheetForColour(QColor &color)
     //    printf("%s",style.toLatin1().data());
     return style;
 }
-ChessWindow::~ChessWindow()
-{
-    delete ui;
-}
+
 QPoint ChessWindow::addSquare(QPoint pos, class QPushButton *b)
 {
     int x = pos.x();
@@ -209,60 +221,65 @@ QPoint ChessWindow::addSquare(QPoint pos, class QPushButton *b)
     }
     return QPoint(x,y);
 }
-void ChessWindow::setPiece(int row, int column, ChessPieceEnum piece)
+void ChessWindow::setPiece(int row, int column, Piece *piece)
 {
     QPushButton *b = Board[row][column];
     QIcon &icon=PieceUnknown;
-    switch(piece)
+
+    switch(piece->getType())
     {
-    case pieceBlackCastle:
+    case pieceNone:
+        icon = PieceNone;
+        break;
+
+    case pieceTourNoir:
         icon = BlackCastle;
         break;
 
-    case pieceBlackHorse:
+    case pieceCavalierNoir:
         icon = BlackHorse;
         break;
 
-    case pieceBlackKing:
+    case pieceRoiNoir:
         icon = BlackKing;
         break;
 
-    case pieceBlackPawn:
+    case piecePionNoir:
         icon = BlackPawn;
         break;
 
-    case pieceBlackQueen:
+    case pieceReineNoir:
         icon = BlackQueen;
         break;
 
-    case pieceBlackRook:
-        icon = BlackRook;
+    case pieceFouNoir:
+        icon = BlackBishop;
         break;
+    case pieceTourBlanc:
+          icon = WhiteCastle;
+          break;
 
-    case pieceWhiteCastle:
-        icon = WhiteCastle;
-        break;
+      case pieceCavalierBlanc:
+          icon = WhiteHorse;
+          break;
 
-    case pieceWhiteHorse:
-        icon = WhiteHorse;
-        break;
+      case pieceRoiBlanc:
+          icon = WhiteKing;
+          break;
 
-    case pieceWhiteKing:
-        icon = WhiteKing;
-        break;
+      case piecePionBlanc:
+          icon = WhitePawn;
+          break;
 
-    case pieceWhitePawn:
-        icon = WhitePawn;
-        break;
+      case pieceReineBlanc:
+          icon = WhiteQueen;
+          break;
 
-    case pieceWhiteQueen:
-        icon = WhiteQueen;
-        break;
-
-    case pieceWhiteRook:
-        icon = WhiteRook;
-        break;
+      case pieceFouBlanc:
+          icon = WhiteBishop;
+          break;
 default:
+        printf("Unknown %d %s\n",piece->getType(), piece->getNom().c_str());
         icon = PieceUnknown;
     }
     b->setIcon(icon);

@@ -2,25 +2,12 @@
 #define CHESSWINDOW_H
 
 #include <QMainWindow>
+#include "Echecv4/echecinterface.h"
 
 namespace Ui {
 class ChessWindow;
 }
 
-typedef enum _ChessPieceEnum {
-    pieceBlackCastle,
-    pieceBlackHorse,
-    pieceBlackKing,
-    pieceBlackPawn,
-    pieceBlackQueen,
-    pieceBlackRook,
-    pieceWhiteCastle,
-    pieceWhiteHorse,
-    pieceWhiteKing,
-    pieceWhitePawn,
-    pieceWhiteQueen,
-    pieceWhiteRook,
-}ChessPieceEnum;
 
 class ChessWindow : public QMainWindow
 {
@@ -37,23 +24,26 @@ private:
     QIcon BlackKing;
     QIcon BlackPawn;
     QIcon BlackQueen;
-    QIcon BlackRook;
+    QIcon BlackBishop;
     QIcon WhiteCastle;
     QIcon WhiteHorse;
     QIcon WhiteKing;
     QIcon WhitePawn;
     QIcon WhiteQueen;
-    QIcon WhiteRook;
+    QIcon WhiteBishop;
     QIcon PieceUnknown;
+    QIcon PieceNone;
+
     QString blackSquareStyle;
     QString whiteSquareStyle;
 
     class QPushButton* Board[8][8];
-    void setPiece(int row, int column, ChessPieceEnum piece);
+    void setPiece(int row, int column, Piece *piece);
     QPoint addSquare(QPoint pos, class QPushButton *b);
     QString ChessWindow::getStyleSheetForColour(QColor &color);
     class QPushButton *currentlySelectedButton;
 
+    EchecInterface echec;
 private slots:
     void on_buttonClicked();
 };
