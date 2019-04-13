@@ -8,10 +8,15 @@ void EchecInterface::SetupBoard()
 {
     appelTableau = new Piece();
 
-    Piece *caseVide = new Piece();
+    caseVide = new Piece();
     caseVide->setEnJeu(false);
     caseVide->setEstBlanc(false);
-    caseVide->setType(pieceNone);
+
+    for (int i = 0; i < 8; i++) {
+            for (int j =0; j < 8; j++) {
+                    appelTableau->listePiece[i][j] = caseVide;
+            }
+    }
 
     Pion *pn1 = new Pion(0, 6, 0, false);
     appelTableau->listePiece[6][0] = pn1;
@@ -88,8 +93,8 @@ void EchecInterface::SetupBoard()
     Tour *tb1 = new Tour(24, 0, 0, true);
     appelTableau->listePiece[0][0] = tb1;
 
-    Tour *tb2 = new Tour(25, 0, 7, true);
-    appelTableau->listePiece[0][7] = tb2;
+    Tour *tb2 = new Tour(25, 4, 5, true);
+    appelTableau->listePiece[4][5] = tb2;
 
     Cavalier *cb1 = new Cavalier(26, 0, 1, true);
     appelTableau->listePiece[0][1] = cb1;
@@ -109,11 +114,6 @@ void EchecInterface::SetupBoard()
     Reine *r_b = new Reine(31, 0, 3, true);
     appelTableau->listePiece[0][3] = r_b;
 
-    for (int i = 2; i < 6; i++) {
-            for (int j = 0; j < 8; j++) {
-                    appelTableau->listePiece[i][j] = caseVide;
-            }
-    }
 
 }
 Piece *EchecInterface::getPiece(int positionX, int positionY)
@@ -123,14 +123,21 @@ Piece *EchecInterface::getPiece(int positionX, int positionY)
 bool EchecInterface::canTake(Piece *thisPiece, int positionX, int positionY)
 {
     Piece *p = appelTableau->listePiece[positionX][positionY];
-    EchecPieceEnum type = p->getType();
-    if (type == pieceNone)
+
+    if (p->getNom().empty())
         return true;
     if (p->getEstBlanc() == thisPiece->getEstBlanc())
         return false;
-    if (type != pieceRoiBlanc && type != pieceRoiNoir )
+    if (p->getNom() != "roi_n" && p->getNom() != "roi_b")
         return true;
     return false;
+}
+bool EchecInterface::movePiece(Piece *thisPiece, int positionX, int positionY)
+{
+    appelTableau->listePiece[positionX][positionY] = thisPiece;
+    appelTableau->listePiece[thisPiece->getPositionX()][thisPiece->getPositionY()] = caseVide;
+    thisPiece->setPosition(pair<int,int>(positionX, positionY));
+    return true;
 }
 //bool finPartie = false;
 //bool joueurBlanc = true;
