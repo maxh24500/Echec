@@ -25,10 +25,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        chesswindow.cpp
+        chesswindow.cpp \
+    Echecv4/Cavalier.cpp \
+    Echecv4/Echecv4.cpp \
+    Echecv4/Fou.cpp \
+    Echecv4/main.cpp \
+    Echecv4/pch.cpp \
+    Echecv4/Piece.cpp \
+    Echecv4/Pion.cpp \
+    Echecv4/Reine.cpp \
+    Echecv4/Roi.cpp \
+    Echecv4/Tour.cpp
 
 HEADERS += \
-        chesswindow.h
+        chesswindow.h \
+    Echecv4/Cavalier.h \
+    Echecv4/Fou.h \
+    Echecv4/pch.h \
+    Echecv4/Piece.h \
+    Echecv4/Pion.h \
+    Echecv4/Reine.h \
+    Echecv4/Roi.h \
+    Echecv4/Tour.h
 
 FORMS += \
         chesswindow.ui
