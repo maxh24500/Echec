@@ -32,3 +32,6 @@ HEADERS += \
 
 FORMS += \
         chesswindow.ui
+
+RESOURCES += \
+    resourcechess.qrc
