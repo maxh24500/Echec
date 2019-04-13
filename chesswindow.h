@@ -52,10 +52,9 @@ private:
     void setPiece(int row, int column, ChessPieceEnum piece);
     QPoint addSquare(QPoint pos, class QPushButton *b);
     QString ChessWindow::getStyleSheetForColour(QColor &color);
+    class QPushButton *currentlySelectedButton;
 
 private slots:
-    //static void onButtonClicked(class QButton *button);
-
     void on_buttonClicked();
 };
 

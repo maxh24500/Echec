@@ -161,9 +161,9 @@ QString ChessWindow::getStyleSheetForColour(QColor &color)
     style += "{\n";
     style += "    background-color: rgb(170, 170, 127)\n";
     style += "}\n";
-    style += "QPushButton:hover:pressed\n";
+    style += "QPushButton:hover:checked\n";
     style += "{\n";
-    style += "    background-color: rgb(170, 170, 33)\n";
+    style += "    background-color: #909\n";
     style += "}\n";
     style += "QPushButton:checked\n";
     style += "{\n";
@@ -272,7 +272,7 @@ default:
 void ChessWindow::on_buttonClicked()
 {
     QPushButton *button = (QPushButton *)sender();
-
+if (button->isChecked()){
     for(int r = 0; r < 8; r++)
     {
         for(int c = 0; c < 8; c++)
@@ -282,5 +282,9 @@ void ChessWindow::on_buttonClicked()
                 b->setChecked(false);
         }
     }
+    currentlySelectedButton = button;
     printf("b clicked\n");fflush(stdout);
+}
+else
+    printf("b clicked but not checked\n");fflush(stdout);
 }
