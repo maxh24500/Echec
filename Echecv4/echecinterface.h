@@ -18,6 +18,7 @@ public:
     EchecInterface();
     void SetupBoard();
     Piece *getPiece(int positionX, int positionY);
+    bool canTake(Piece *thisPiece, int positionX, int positionY);
 };
 
 #endif // ECHECINTERFACE_H

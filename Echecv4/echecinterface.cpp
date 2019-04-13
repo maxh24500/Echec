@@ -120,6 +120,18 @@ Piece *EchecInterface::getPiece(int positionX, int positionY)
 {
     return appelTableau->listePiece[positionX][positionY];
 }
+bool EchecInterface::canTake(Piece *thisPiece, int positionX, int positionY)
+{
+    Piece *p = appelTableau->listePiece[positionX][positionY];
+    EchecPieceEnum type = p->getType();
+    if (type == pieceNone)
+        return true;
+    if (p->getEstBlanc() == thisPiece->getEstBlanc())
+        return false;
+    if (type != pieceRoiBlanc && type != pieceRoiNoir )
+        return true;
+    return false;
+}
 //bool finPartie = false;
 //bool joueurBlanc = true;
 

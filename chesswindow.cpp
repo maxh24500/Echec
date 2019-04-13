@@ -1,6 +1,18 @@
 #include "chesswindow.h"
 #include "ui_chesswindow.h"
 
+void ChessWindow::UpdateBoard()
+{
+    for(int row = 0; row < 8; row++)
+    {
+        for(int col = 0; col < 8; col++)
+        {
+            Piece *p = echec.getPiece(row, col);
+            setPiece(row,col, p);
+        }
+    }
+}
+
 ChessWindow::ChessWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ChessWindow),
@@ -98,51 +110,8 @@ ChessWindow::ChessWindow(QWidget *parent) :
     bpos = addSquare(bpos, ui->H_7);
     bpos = addSquare(bpos, ui->H_8);
 
-for(int row = 0; row < 8; row++)
-{
-    for(int col = 0; col < 8; col++)
-    {
-        Piece *p = echec.getPiece(row, col);
-        setPiece(row,col, p);
-    }
-}
-//    setPiece(0,0, pieceBlackCastle);
-//    setPiece(0,1, pieceBlackHorse);
-//    setPiece(0,2, pieceBlackRook);
-//    setPiece(0,3, pieceBlackKing);
-//    setPiece(0,4, pieceBlackQueen);
-//    setPiece(0,5, pieceBlackRook);
-//    setPiece(0,6, pieceBlackHorse);
-//    setPiece(0,7, pieceBlackCastle);
 
-//    setPiece(1,0, pieceBlackPawn);
-//    setPiece(1,1, pieceBlackPawn);
-//    setPiece(1,2, pieceBlackPawn);
-//    setPiece(1,3, pieceBlackPawn);
-//    setPiece(1,4, pieceBlackPawn);
-//    setPiece(1,5, pieceBlackPawn);
-//    setPiece(1,6, pieceBlackPawn);
-//    setPiece(1,7, pieceBlackPawn);
-
-
-//    setPiece(6,0, pieceWhitePawn);
-//    setPiece(6,1, pieceWhitePawn);
-//    setPiece(6,2, pieceWhitePawn);
-//    setPiece(6,3, pieceWhitePawn);
-//    setPiece(6,4, pieceWhitePawn);
-//    setPiece(6,5, pieceWhitePawn);
-//    setPiece(6,6, pieceWhitePawn);
-//    setPiece(6,7, pieceWhitePawn);
-
-//    setPiece(7,0, pieceWhiteCastle);
-//    setPiece(7,1, pieceWhiteHorse);
-//    setPiece(7,2, pieceWhiteRook);
-//    setPiece(7,3, pieceWhiteKing);
-//    setPiece(7,4, pieceWhiteQueen);
-//    setPiece(7,5, pieceWhiteRook);
-//    setPiece(7,6, pieceWhiteHorse);
-//    setPiece(7,7, pieceWhiteCastle);
-
+    UpdateBoard();
 }
 
 ChessWindow::~ChessWindow()
@@ -221,6 +190,7 @@ QPoint ChessWindow::addSquare(QPoint pos, class QPushButton *b)
     }
     return QPoint(x,y);
 }
+
 void ChessWindow::setPiece(int row, int column, Piece *piece)
 {
     QPushButton *b = Board[row][column];
@@ -289,19 +259,41 @@ default:
 void ChessWindow::on_buttonClicked()
 {
     QPushButton *button = (QPushButton *)sender();
-if (button->isChecked()){
-    for(int r = 0; r < 8; r++)
-    {
-        for(int c = 0; c < 8; c++)
+
+    if (button->isChecked()){
+        Piece *laPiece1 = nullptr;
+
+        for(int r = 0; r < 8; r++)
         {
-            QPushButton *b = Board[r][c];
-            if (b != button)
-                b->setChecked(false);
+            for(int c = 0; c < 8; c++)
+            {
+                QPushButton *b = Board[r][c];
+                if (b != button)
+                    b->setChecked(false);
+                else
+                    laPiece1 = echec.getPiece(r,c);
+            }
         }
+        if (laPiece1)
+        {
+            for(int r = 0; r < 8; r++)
+            {
+                for(int c = 0; c < 8; c++)
+                {
+                    QPushButton *b = Board[r][c];
+                    bool canMove = laPiece1->deplacement(r,c);
+                    if (echec.getPiece(r,c)->getType() != pieceNone)
+                        if (!echec.canTake(laPiece1, r,c))
+                            canMove = false;
+
+                    if (canMove)
+                        b->setChecked(true);
+                }
+            }
+        }
+        currentlySelectedButton = button;
+        printf("b clicked\n");fflush(stdout);
     }
-    currentlySelectedButton = button;
-    printf("b clicked\n");fflush(stdout);
-}
-else
-    printf("b clicked but not checked\n");fflush(stdout);
+    else
+        printf("b clicked but not checked\n");fflush(stdout);
 }

@@ -19,6 +19,8 @@ public:
 
 private:
     Ui::ChessWindow *ui;
+
+    EchecInterface echec;
     QIcon BlackCastle;
     QIcon BlackHorse;
     QIcon BlackKing;
@@ -42,8 +44,8 @@ private:
     QPoint addSquare(QPoint pos, class QPushButton *b);
     QString ChessWindow::getStyleSheetForColour(QColor &color);
     class QPushButton *currentlySelectedButton;
+    void UpdateBoard();
 
-    EchecInterface echec;
 private slots:
     void on_buttonClicked();
 };
