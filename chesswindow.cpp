@@ -36,8 +36,8 @@ ChessWindow::ChessWindow(QWidget *parent) :
     ui->setupUi(this);
 
     echec.SetupBoard();
-       blackSquareStyle = getStyleSheetForColour(QColor(Qt::darkGray));
-       whiteSquareStyle = getStyleSheetForColour(QColor(Qt::lightGray));
+    blackSquareStyle = getStyleSheetForColour(QColor(Qt::darkGray));
+    whiteSquareStyle = getStyleSheetForColour(QColor(Qt::lightGray));
 
     QPoint bpos(0,0);
     bpos = addSquare(bpos, ui->A_1);
@@ -135,10 +135,10 @@ QString ChessWindow::getStyleSheetForColour(const QColor &color)
         style += QString("background-color: #ddd\n");
 
     style += "}\n";
-//    style += "{\n";
-//    style += "     border: 1px solid black;\n";
-//    style += "     border-radius: 5px;\n";
-//    style += "}\n";
+    //    style += "{\n";
+    //    style += "     border: 1px solid black;\n";
+    //    style += "     border-radius: 5px;\n";
+    //    style += "}\n";
 
     style += "QPushButton:disabled {\n";
     style += "    background-color: rgb(170, 170, 127)\n";
@@ -257,9 +257,12 @@ void ChessWindow::on_buttonClicked()
     if (currentlySelectedButton){
         QPoint destination = findSelectedButton(button);
 
-        echec.movePiece(selectedPiece, destination.x(), destination.y());
+        if (currentlySelectedButton != button)
+            echec.movePiece(selectedPiece, destination.x(), destination.y());
+
         currentlySelectedButton = nullptr;
         selectedPiece = nullptr;
+
         for(int r = 0; r < 8; r++)
         {
             for(int c = 0; c < 8; c++)
@@ -268,33 +271,21 @@ void ChessWindow::on_buttonClicked()
                 b->setChecked(false);
             }
         }
-     UpdateBoard();
+        UpdateBoard();
     }
 
 
     if (button->isChecked()){
         QPoint p = findSelectedButton(button);
         selectedPiece = echec.getPiece(p.x(), p.y());
+        if (selectedPiece->getNom().empty()){
+            selectedPiece = nullptr;
+            button->setChecked(false);
+            return;
+        }
         currentlySelectedButton = button;
         printf("b clicked\n");fflush(stdout);
 
-        //        if (laPiece1)
-        //        {
-        //            for(int r = 0; r < 8; r++)
-        //            {
-        //                for(int c = 0; c < 8; c++)
-        //                {
-        //                    QPushButton *b = Board[r][c];
-        //                    bool canMove = laPiece1->deplacement(r,c);
-        //                    if (echec.getPiece(r,c)->getNom() != "")
-        //                        if (!echec.canTake(laPiece1, r,c))
-        //                            canMove = false;
-
-        //                    if (canMove)
-        //                        b->setChecked(true);
-        //                }
-        //            }
-        //        }
 
     }
     else
