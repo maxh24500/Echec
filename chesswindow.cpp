@@ -149,16 +149,26 @@ QString ChessWindow::getStyleSheetForColour(QColor &color)
         style += QString("background-color: #ddd\n");
 
     style += "}\n";
-    style += "     border: 1px solid black;\n";
-    style += "     border-radius: 5px;\n";
-    style += "}\n";
+//    style += "{\n";
+//    style += "     border: 1px solid black;\n";
+//    style += "     border-radius: 5px;\n";
+//    style += "}\n";
+
     style += "QPushButton:disabled {\n";
     style += "    background-color: rgb(170, 170, 127)\n";
     style += "}\n\n";
-    //    style += "QPushButton:hover:!pressed\n";
-    //    style += "{\n";
-    //    style += "    background-color: rgb(170, 170, 127)\n";
-    //    style += "}\n";
+    style += "QPushButton:hover:!pressed\n";
+    style += "{\n";
+    style += "    background-color: rgb(170, 170, 127)\n";
+    style += "}\n";
+    style += "QPushButton:hover:pressed\n";
+    style += "{\n";
+    style += "    background-color: rgb(170, 170, 33)\n";
+    style += "}\n";
+    style += "QPushButton:checked\n";
+    style += "{\n";
+    style += "    background-color: #f0f\n";
+    style += "}\n";
 
     //    printf("%s",style.toLatin1().data());
     return style;
@@ -171,8 +181,10 @@ QPoint ChessWindow::addSquare(QPoint pos, class QPushButton *b)
 {
     int x = pos.x();
     int y = pos.y();
-    printf("add %d %d \n",x,y);
 
+    // make the button checkable and connect it
+    b->setCheckable(true);
+    connect(b, SIGNAL(clicked()), this, SLOT(on_buttonClicked()));
     // colour the squares
     if (y % 2){
         if (x %2)
@@ -255,4 +267,20 @@ default:
     }
     b->setIcon(icon);
     b->setIconSize(QSize(150,150));
+}
+
+void ChessWindow::on_buttonClicked()
+{
+    QPushButton *button = (QPushButton *)sender();
+
+    for(int r = 0; r < 8; r++)
+    {
+        for(int c = 0; c < 8; c++)
+        {
+            QPushButton *b = Board[r][c];
+            if (b != button)
+                b->setChecked(false);
+        }
+    }
+    printf("b clicked\n");fflush(stdout);
 }

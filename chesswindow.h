@@ -53,6 +53,10 @@ private:
     QPoint addSquare(QPoint pos, class QPushButton *b);
     QString ChessWindow::getStyleSheetForColour(QColor &color);
 
+private slots:
+    //static void onButtonClicked(class QButton *button);
+
+    void on_buttonClicked();
 };
 
 #endif // CHESSWINDOW_H
