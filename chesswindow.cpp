@@ -20,14 +20,8 @@ ChessWindow::ChessWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QColor col = QColor(Qt::blue);
-    if(col.isValid()) {
-       blackSquareStyle = QString("background-color: %1").arg(col.name());
-    }
-    col = QColor(Qt::yellow);
-    if(col.isValid()) {
-       whiteSquareStyle = QString("background-color: %1").arg(col.name());
-    }
+       blackSquareStyle = getStyleSheetForColour(QColor(Qt::darkGray));
+       whiteSquareStyle = getStyleSheetForColour(QColor(Qt::lightGray));
 
     QPoint bpos(0,0);
     bpos = addSquare(bpos, ui->A_1);
@@ -141,7 +135,34 @@ ChessWindow::ChessWindow(QWidget *parent) :
     setPiece(7,7, pieceWhiteCastle);
 
 }
+QString ChessWindow::getStyleSheetForColour(QColor &color)
+{
+    QString style = "QPushButton:pressed {\n";
+    style += "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   stop:0 rgba(60, 186, 162, 255), stop:1 rgba(98, 211, 162, 255))\n";
+    style += "}\n";
 
+    style += "QPushButton {\n";
+    if(color.isValid()) {
+        style += QString("background-color: %1\n").arg(color.name());
+    }
+    else
+        style += QString("background-color: #ddd\n");
+
+    style += "}\n";
+    style += "     border: 1px solid black;\n";
+    style += "     border-radius: 5px;\n";
+    style += "}\n";
+    style += "QPushButton:disabled {\n";
+    style += "    background-color: rgb(170, 170, 127)\n";
+    style += "}\n\n";
+    //    style += "QPushButton:hover:!pressed\n";
+    //    style += "{\n";
+    //    style += "    background-color: rgb(170, 170, 127)\n";
+    //    style += "}\n";
+
+    //    printf("%s",style.toLatin1().data());
+    return style;
+}
 ChessWindow::~ChessWindow()
 {
     delete ui;
