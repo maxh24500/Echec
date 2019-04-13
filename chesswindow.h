@@ -42,7 +42,11 @@ private:
     class QPushButton* Board[8][8];
     void setPiece(int row, int column, Piece *piece);
     QPoint addSquare(QPoint pos, class QPushButton *b);
-    QString ChessWindow::getStyleSheetForColour(QColor &color);
+    QString ChessWindow::getStyleSheetForColour(const QColor &color);
+    QPoint findSelectedButton(QPushButton *button);
+
+    Piece *selectedPiece;
+
     class QPushButton *currentlySelectedButton;
     void UpdateBoard();
 

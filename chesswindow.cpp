@@ -29,7 +29,9 @@ ChessWindow::ChessWindow(QWidget *parent) :
     WhiteQueen(QPixmap(":/pieces/WhiteQueen.png")),
     WhiteBishop(QPixmap(":/pieces/WhiteBishop.png")),
     PieceUnknown(QPixmap(":/pieces/PieceUnknown.png")),
-    PieceNone(QPixmap(":/pieces/PieceNone.png"))
+    PieceNone(QPixmap(":/pieces/PieceNone.png")),
+    currentlySelectedButton(nullptr),
+    selectedPiece(nullptr)
 {
     ui->setupUi(this);
 
@@ -119,7 +121,7 @@ ChessWindow::~ChessWindow()
     delete ui;
 }
 
-QString ChessWindow::getStyleSheetForColour(QColor &color)
+QString ChessWindow::getStyleSheetForColour(const QColor &color)
 {
     QString style = "QPushButton:pressed {\n";
     style += "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   stop:0 rgba(60, 186, 162, 255), stop:1 rgba(98, 211, 162, 255))\n";
@@ -233,44 +235,67 @@ void ChessWindow::setPiece(int row, int column, Piece *piece)
     b->setIcon(icon);
     b->setIconSize(QSize(150,150));
 }
-
+QPoint ChessWindow::findSelectedButton(QPushButton *button)
+{
+    for(int r = 0; r < 8; r++)
+    {
+        for(int c = 0; c < 8; c++)
+        {
+            if (Board[r][c] == button)
+            {
+                return QPoint(r,c);
+            }
+        }
+    }
+    throw "Failed to locate button for click";
+    //return rv(-1,-1);
+}
 void ChessWindow::on_buttonClicked()
 {
     QPushButton *button = (QPushButton *)sender();
 
-    if (button->isChecked()){
-        Piece *laPiece1 = nullptr;
+    if (currentlySelectedButton){
+        QPoint destination = findSelectedButton(button);
 
+        echec.movePiece(selectedPiece, destination.x(), destination.y());
+        currentlySelectedButton = nullptr;
+        selectedPiece = nullptr;
         for(int r = 0; r < 8; r++)
         {
             for(int c = 0; c < 8; c++)
             {
                 QPushButton *b = Board[r][c];
-                if (b != button)
-                    b->setChecked(false);
-                else
-                    laPiece1 = echec.getPiece(r,c);
+                b->setChecked(false);
             }
         }
-        if (laPiece1)
-        {
-            for(int r = 0; r < 8; r++)
-            {
-                for(int c = 0; c < 8; c++)
-                {
-                    QPushButton *b = Board[r][c];
-                    bool canMove = laPiece1->deplacement(r,c);
-                    if (echec.getPiece(r,c)->getNom() != "")
-                        if (!echec.canTake(laPiece1, r,c))
-                            canMove = false;
+     UpdateBoard();
+    }
 
-                    if (canMove)
-                        b->setChecked(true);
-                }
-            }
-        }
+
+    if (button->isChecked()){
+        QPoint p = findSelectedButton(button);
+        selectedPiece = echec.getPiece(p.x(), p.y());
         currentlySelectedButton = button;
         printf("b clicked\n");fflush(stdout);
+
+        //        if (laPiece1)
+        //        {
+        //            for(int r = 0; r < 8; r++)
+        //            {
+        //                for(int c = 0; c < 8; c++)
+        //                {
+        //                    QPushButton *b = Board[r][c];
+        //                    bool canMove = laPiece1->deplacement(r,c);
+        //                    if (echec.getPiece(r,c)->getNom() != "")
+        //                        if (!echec.canTake(laPiece1, r,c))
+        //                            canMove = false;
+
+        //                    if (canMove)
+        //                        b->setChecked(true);
+        //                }
+        //            }
+        //        }
+
     }
     else
         printf("b clicked but not checked\n");fflush(stdout);
