@@ -139,6 +139,19 @@ bool EchecInterface::movePiece(Piece *thisPiece, int positionX, int positionY)
     thisPiece->setPosition(pair<int,int>(positionX, positionY));
     return true;
 }
+bool EchecInterface::isWhitePlayer()
+{
+    return joueurBlanc;
+}
+bool EchecInterface::switchPlayer()
+{
+    if (joueurBlanc)
+        joueurBlanc = false;
+    else
+        joueurBlanc = true;
+    return joueurBlanc;
+}
+
 //bool finPartie = false;
 //bool joueurBlanc = true;
 

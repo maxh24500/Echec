@@ -257,9 +257,10 @@ void ChessWindow::on_buttonClicked()
     if (currentlySelectedButton){
         QPoint destination = findSelectedButton(button);
 
-        if (currentlySelectedButton != button)
+        if (currentlySelectedButton != button){
             echec.movePiece(selectedPiece, destination.x(), destination.y());
-
+            echec.switchPlayer();
+        }
         currentlySelectedButton = nullptr;
         selectedPiece = nullptr;
 
@@ -278,6 +279,12 @@ void ChessWindow::on_buttonClicked()
     if (button->isChecked()){
         QPoint p = findSelectedButton(button);
         selectedPiece = echec.getPiece(p.x(), p.y());
+
+        if (echec.isWhitePlayer() != selectedPiece->getEstBlanc()){
+            selectedPiece = nullptr;
+            button->setChecked(false);
+            return;
+        }
         if (selectedPiece->getNom().empty()){
             selectedPiece = nullptr;
             button->setChecked(false);

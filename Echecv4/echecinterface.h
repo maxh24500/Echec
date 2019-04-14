@@ -15,12 +15,17 @@ class EchecInterface
 private:
     Piece *appelTableau;
     Piece *caseVide;
+    bool finPartie = false;
+    bool joueurBlanc = true;
+
 public:
     EchecInterface();
     void SetupBoard();
     Piece *getPiece(int positionX, int positionY);
     bool canTake(Piece *thisPiece, int positionX, int positionY);
     bool movePiece(Piece *thisPiece, int positionX, int positionY);
+    bool isWhitePlayer();
+    bool switchPlayer();
 };
 
 #endif // ECHECINTERFACE_H
