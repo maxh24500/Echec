@@ -8,13 +8,13 @@
 #include "Roi.h"
 #include "Reine.h"
 
+
+
 int main() {
-
 	Piece *appelTableau = new Piece();
-
 	Piece *caseVide = new Piece();
 	caseVide->setEnJeu(false);
-	caseVide->setEstBlanc(false);
+	
 
 	Pion *pn1 = new Pion(0, 6, 0, false);
 	appelTableau->listePiece[6][0] = pn1;
@@ -119,7 +119,7 @@ int main() {
 	}
 
 	bool finPartie = false;
-	bool joueurBlanc = true;
+	bool Blanc = true;
 
 	string choix;
 
@@ -129,42 +129,113 @@ int main() {
 	Piece *laPiece1 = new Piece();
 	Piece *laPiece2 = new Piece();
 
+	bool enJeu = false;
+	bool Joueur1 = true;
+
 	while (!finPartie) {
+		while (Joueur1 == true)
+		{
+			//JOUEUR BLANC
+			cout << "c'est au tour du joueur Blanc" << endl;
 
-		appelTableau->afficherPlateau();
+			appelTableau->afficherPlateau();
 
+			cout << "Saisir la case de la piece a deplacer : " << endl;
+			cin >> choix;
+			cellBase = laPiece1->platToCell(choix);
+			laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
+			Blanc = laPiece1->getEstBlanc();
 
-		cout << "Saisir la case de la piece a deplacer : " << endl;
-		cin >> choix;
+			while (Blanc == false || appelTableau->listePiece[cellBase.first][cellBase.second] == caseVide)
+			{
+				cout << "Erreur, vous ne possedez pas cette piece" << endl;
+				appelTableau->afficherPlateau();
+				cout << "Saisir la case de la piece a deplacer : " << endl;
+				cin >> choix;
+				cellBase = laPiece1->platToCell(choix);
+				laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
+				Blanc = laPiece1->getEstBlanc();
+			}
 
-		cellBase = laPiece1->platToCell(choix);
+			cout << "Saisir la case d'arrivee : " << endl;
+			cin >> choix;
 
-		laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
+			cellArriv = laPiece2->platToCell(choix);
 
-		cout << "Saisir la case d'arrivee : " << endl;
-		cin >> choix;
+			laPiece2 = appelTableau->listePiece[cellArriv.first][cellArriv.second];
 
-		cellArriv = laPiece2->platToCell(choix);
+			
+			enJeu = laPiece2->getEnJeu();
 
-		laPiece2 = appelTableau->listePiece[cellArriv.first][cellArriv.second];
-
-		bool enJeu = false;
-		//= laPiece2->getEnJeu();
-
-		if (enJeu == false || laPiece2->getEstBlanc() != joueurBlanc) {
-			bool mouvAutorise;
-			mouvAutorise = laPiece1->deplacement(cellArriv.first, cellArriv.second);
-			if (mouvAutorise == true) {
-				appelTableau->listePiece[cellBase.first][cellBase.second] = caseVide;
-				appelTableau->listePiece[cellArriv.first][cellArriv.second] = laPiece1;
+			if (enJeu == false || laPiece2->getEstBlanc() != Blanc) {
+				bool mouvAutorise;
+				mouvAutorise = laPiece1->deplacement(cellArriv.first, cellArriv.second,appelTableau);
+				if (mouvAutorise == true) {
+					appelTableau->listePiece[cellBase.first][cellBase.second] = caseVide;
+					appelTableau->listePiece[cellArriv.first][cellArriv.second] = laPiece1;
+					Joueur1 = false;
+				}
+				else {
+					cout << "Erreur : mouvement non-autorise : ";
+				}
 			}
 			else {
-				cout << "Erreur : mouvement non-autorise." << endl;
+				cout << "Erreur : case selectionnee prise par une de vos pieces : ";
 			}
 		}
-		else {
-			cout << "Erreur : case selectionnee prise par une de vos pieces." << endl;
+		
+		//JOUEUR NOIR
+		while (Joueur1 == false)
+		{
+			cout << "c'est au tour du joueur Noir" << endl;
+
+			appelTableau->afficherPlateau();
+
+
+			cout << "Saisir la case de la piece a deplacer : " << endl;
+			cin >> choix;
+			cellBase = laPiece1->platToCell(choix);
+			laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
+			Blanc = laPiece1->getEstBlanc();
+
+			while (Blanc == true || appelTableau->listePiece[cellBase.first][cellBase.second] == caseVide)
+			{
+				cout << "Erreur, vous ne possedez pas cette piece" << endl;
+				appelTableau->afficherPlateau();
+				cout << "Saisir la case de la piece a deplacer : " << endl;
+				cin >> choix;
+				cellBase = laPiece1->platToCell(choix);
+				laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
+				Blanc = laPiece1->getEstBlanc();
+			}
+
+			cout << "Saisir la case d'arrivee : " << endl;
+			cin >> choix;
+
+			cellArriv = laPiece2->platToCell(choix);
+
+			laPiece2 = appelTableau->listePiece[cellArriv.first][cellArriv.second];
+
+			enJeu = false;
+			enJeu = laPiece2->getEnJeu();
+
+			if (enJeu == false || laPiece2->getEstBlanc() != Blanc) {
+				bool mouvAutorise;
+				mouvAutorise = laPiece1->deplacement(cellArriv.first, cellArriv.second,appelTableau);
+				if (mouvAutorise == true) {
+					appelTableau->listePiece[cellBase.first][cellBase.second] = caseVide;
+					appelTableau->listePiece[cellArriv.first][cellArriv.second] = laPiece1;
+					Joueur1 = true;
+				}
+				else {
+					cout << "Erreur : mouvement non-autorise : ";
+				}
+			}
+			else {
+				cout << "Erreur : case selectionnee prise par une de vos pieces : ";
+			}
 		}
 	}
+
 	return 0;
 }
