@@ -6,5 +6,5 @@ class Fou : public Piece {
 public:
     Fou(int id, int positionX, int positionY, bool blanc);
     void mouv(int cas, int nbCase);
-    virtual bool deplacement(int X, int Y);
+    virtual bool deplacement(int X, int Y, Piece *unTableau);
 };
