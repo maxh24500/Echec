@@ -11,6 +11,7 @@ Tour::Tour(int id, int positionX, int positionY, bool blanc):Piece(id, positionX
     this->_position.second = positionY;
     this->_blanc = blanc;
     this->_enJeu = true;
+	this->_estTour = true;
 
     if (!blanc){
         this->_nom = "t_n";
@@ -40,6 +41,7 @@ bool Tour::deplacement(int X, int Y, Piece *unTableau)
 			}
 		}
         this->_position.first = X;
+		this->nbTour++;
         return true;
 
     }
@@ -53,6 +55,7 @@ bool Tour::deplacement(int X, int Y, Piece *unTableau)
 			}
 		}
         this->_position.second = Y;
+		this->nbTour++;
         return true;
     }
     else if (X == this->_position.first && Y < this->_position.second)
@@ -65,6 +68,7 @@ bool Tour::deplacement(int X, int Y, Piece *unTableau)
 			}
 		}
         this->_position.second = Y;
+		this->nbTour++;
         return true;
     }
     else if (X < this->_position.first && Y == this->_position.second)
@@ -77,6 +81,7 @@ bool Tour::deplacement(int X, int Y, Piece *unTableau)
 			}
 		}
         this->_position.first = X;
+		this->nbTour++;
         return true;
     }
 

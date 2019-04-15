@@ -39,16 +39,23 @@ bool Pion::deplacement(int X, int Y, Piece *unTableau)
 		}
 		else if (this->nbTour == 0 && X == this->_position.first + 2 && Y == this->_position.second)
 		{
-			if (unTableau->listePiece[X][Y]->getEstBlanc() == true || unTableau->listePiece[X][Y]->getEstBlanc() == false)
+			if (unTableau->listePiece[X - 1][Y]->getEstBlanc() == true || unTableau->listePiece[X - 1][Y]->getEstBlanc() == false)
 			{
 				return false;
 			}
 			else
 			{
-				this->_position.first = X;
-				this->_position.second = Y;
-				this->nbTour++;
-				return true;
+				if (unTableau->listePiece[X][Y]->getEstBlanc() == true || unTableau->listePiece[X][Y]->getEstBlanc() == false)
+				{
+					return false;
+				}
+				else
+				{
+					this->_position.first = X;
+					this->_position.second = Y;
+					this->nbTour++;
+					return true;
+				}
 			}
 
 		}
@@ -90,16 +97,23 @@ bool Pion::deplacement(int X, int Y, Piece *unTableau)
 		}
 		else if (this->nbTour == 0 && X == this->_position.first - 2 && Y == this->_position.second)
 		{
-			if (unTableau->listePiece[X][Y]->getEstBlanc() == true || unTableau->listePiece[X][Y]->getEstBlanc() == false)
+			if (unTableau->listePiece[X + 1][Y]->getEstBlanc() == true || unTableau->listePiece[X + 1][Y]->getEstBlanc() == false)
 			{
 				return false;
 			}
 			else
 			{
-				this->_position.first = X;
-				this->_position.second = Y;
-				this->nbTour++;
-				return true;
+				if (unTableau->listePiece[X][Y]->getEstBlanc() == true || unTableau->listePiece[X][Y]->getEstBlanc() == false)
+				{
+					return false;
+				}
+				else
+				{
+					this->_position.first = X;
+					this->_position.second = Y;
+					this->nbTour++;
+					return true;
+				}
 			}
 		}
 		else if (X == this->_position.first - 1 && Y == this->_position.second - 1 || X == this->_position.first - 1 && Y == this->_position.second + 1)

@@ -14,13 +14,16 @@ protected:
     bool _blanc;
     bool _enJeu;
     string _nom;
+	int nbTour = 0;
+	bool _estTour = false;
 
 public:
+	
+
     Piece();
     Piece(int id,int positionX,int positionY,bool blanc);
     Piece(int id, bool blanc, bool enJeu, int positionX, int positionY);
     ~Piece();
-
 	
     Piece *listePiece[8][8];
 	virtual bool deplacement(int X, int Y, Piece *unTableau);
@@ -32,12 +35,16 @@ public:
 
     virtual int getPositionX();
     virtual int getPositionY();
-    virtual void setPosition(pair <int, int> newPosition);
+    void setPosition(int X,int Y);
 
     void lirePiece();
 
     bool getEstBlanc();
     void setEstBlanc(bool newValue);
+
+	int getNbTour();
+
+	bool getEstTour();
 
     bool getEnJeu();
     void setEnJeu(bool newValue);
@@ -54,8 +61,4 @@ public:
 
     string cellToPlat(pair <int, int> cellule);
     pair <int, int>platToCell(string position);
-
-    string imprimPiece();
-
-    void mouv(pair<int, int> nouvellePosition) {    this->setPosition(nouvellePosition);    }
 };

@@ -37,8 +37,9 @@ int Piece::getPositionX(){
 int Piece::getPositionY(){
     return this->_position.second;
 }
-void Piece::setPosition(pair <int, int> nouvellePosition){
-    this->_position = nouvellePosition;
+void Piece::setPosition(int X, int Y){
+    this->_position.first = X;
+	this->_position.second = Y;
 }
 
 bool Piece::getEstBlanc(){
@@ -46,6 +47,16 @@ bool Piece::getEstBlanc(){
 }
 void Piece::setEstBlanc(bool nouvelleValeur){
     this->_blanc = nouvelleValeur;
+}
+
+int Piece::getNbTour()
+{
+	return this->nbTour;
+}
+
+bool Piece::getEstTour()
+{
+	return this->_estTour;
 }
 
 bool Piece::getEnJeu(){
@@ -562,16 +573,6 @@ pair <int, int> Piece::platToCell(string position) {
         cellule.second = 7;
     }
     return cellule;
-}
-
-
-
-string Piece::imprimPiece(){
-    if (this == NULL) {
-        return " . ";
-    } else {
-        return this->_nom;
-    }
 }
 
 void Piece::afficherPlateau(){
