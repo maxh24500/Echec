@@ -135,10 +135,19 @@ bool EchecInterface::canTake(Piece *thisPiece, int positionX, int positionY)
 }
 bool EchecInterface::movePiece(Piece *thisPiece, int positionX, int positionY)
 {
-    appelTableau->listePiece[positionX][positionY] = thisPiece;
-    appelTableau->listePiece[thisPiece->getPositionX()][thisPiece->getPositionY()] = caseVide;
-    thisPiece->setPosition(pair<int,int>(positionX, positionY));
-    return true;
+    int currentX = thisPiece->getPositionX();
+    int currentY = thisPiece->getPositionY();
+    if(thisPiece->deplacement(positionX,positionY,appelTableau))
+    {
+        appelTableau->listePiece[positionX][positionY] = thisPiece;
+        appelTableau->listePiece[currentX][currentY]= caseVide;
+        //thisPiece->setPosition(pair<int,int>(positionX, positionY));
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 bool EchecInterface::isWhitePlayer()
 {

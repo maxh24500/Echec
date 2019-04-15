@@ -258,8 +258,10 @@ void ChessWindow::on_buttonClicked()
         QPoint destination = findSelectedButton(button);
 
         if (currentlySelectedButton != button){
-            echec.movePiece(selectedPiece, destination.x(), destination.y());
-            echec.switchPlayer();
+            if (echec.movePiece(selectedPiece, destination.x(), destination.y()))
+            {
+                echec.switchPlayer();
+            }
         }
         currentlySelectedButton = nullptr;
         selectedPiece = nullptr;
