@@ -12,6 +12,7 @@ void EchecInterface::SetupBoard()
     caseVide->setEnJeu(false);
     caseVide->setEstBlanc(false);
 
+    appelTableau->setEstBlanc(true);
     for (int i = 0; i < 8; i++) {
             for (int j =0; j < 8; j++) {
                     appelTableau->listePiece[i][j] = caseVide;
