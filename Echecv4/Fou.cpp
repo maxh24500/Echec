@@ -9,45 +9,14 @@ Fou::Fou(int id, int positionX, int positionY, bool blanc):Piece(id, positionX, 
     this->_enJeu = true;
 
     if (!blanc){
-        this->_nom = "fou_n";
+        this->_nom = "f_n";
     } else {
-        this->_nom = "fou_b";
+        this->_nom = "f_b";
     }
 }
 
-void Fou::mouv(int cas, int nbCase){
 
-    int positionX = this->_position.first;
-    int positionY = this->_position.second;
-
-    pair <int, int> nouvellePosition;
-
-    switch (cas) {
-
-        case 1 :
-            nouvellePosition.first = positionX - nbCase;
-            nouvellePosition.second = positionY + nbCase;
-            break;
-
-        case 2 :
-            nouvellePosition.first = positionX + nbCase;
-            nouvellePosition.second = positionY + nbCase;
-            break;
-
-        case 3 :
-            nouvellePosition.first = positionX + nbCase;
-            nouvellePosition.second = positionY - nbCase;
-            break;
-
-        case 4 :
-            nouvellePosition.first = positionX - nbCase;
-            nouvellePosition.second = positionY - nbCase;
-            break;
-    }
-    this->setPosition(nouvellePosition);
-}
-
-bool Fou::deplacement(int X, int Y)
+bool Fou::deplacement(int X, int Y, Piece *unTableau)
 {
     int total1;
     int total2;
@@ -64,6 +33,58 @@ bool Fou::deplacement(int X, int Y)
 
     if (total1 == total2)
     {
+		if (X < this->_position.first && Y < this->_position.second)
+		{
+			for (int i = X + 1; i < this->_position.first; i++)
+			{
+				for (int j = Y + 1; j < this->_position.second; j++)
+				{
+					if (unTableau->listePiece[i][j]->getEstBlanc() == true || unTableau->listePiece[i][j]->getEstBlanc() == false)
+					{
+						return false;
+					}
+				}
+			}
+		}
+		if (X > this->_position.first && Y < this->_position.second)
+		{
+			for (int i = X - 1; i > this->_position.first; i--)
+			{
+				for (int j = Y + 1; j < this->_position.second; j++)
+				{
+					if (unTableau->listePiece[i][j]->getEstBlanc() == true || unTableau->listePiece[i][j]->getEstBlanc() == false)
+					{
+						return false;
+					}
+				}
+			}
+		}
+		if (X < this->_position.first && Y > this->_position.second)
+		{
+			for (int i = X + 1; i < this->_position.first; i++)
+			{
+				for (int j = Y - 1; j > this->_position.second; j--)
+				{
+					if (unTableau->listePiece[i][j]->getEstBlanc() == true || unTableau->listePiece[i][j]->getEstBlanc() == false)
+					{
+						return false;
+					}
+				}
+			}
+		}
+		if (X > this->_position.first && Y > this->_position.second)
+		{
+			for (int i = X - 1; i > this->_position.first; i--)
+			{
+				for (int j = Y - 1; j > this->_position.second; j--)
+				{
+					if (unTableau->listePiece[i][j]->getEstBlanc() == true || unTableau->listePiece[i][j]->getEstBlanc() == false)
+					{
+						return false;
+					}
+				}
+			}
+		}
         this->_position.first = X;
         this->_position.second = Y;
         return true;
