@@ -9,13 +9,13 @@ Cavalier::Cavalier(int id, int positionX, int positionY, bool blanc):Piece(id, p
     this->_enJeu = true;
 
     if (!blanc){
-        this->_nom = "cav_n";
+        this->_nom = "c_n";
     } else {
-        this->_nom = "cav_b";
+        this->_nom = "c_b";
     }
 }
 
-bool Cavalier::deplacement(int X, int Y)
+bool Cavalier::deplacement(int X, int Y, Piece *unTableau)
 {
     if (X == this->_position.first - 2 && Y == this->_position.second + 1)
     {
