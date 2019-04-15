@@ -7,8 +7,7 @@ void ChessWindow::UpdateBoard()
     {
         for(int col = 0; col < 8; col++)
         {
-            Piece *p = echec.getPiece(row, col);
-            setPiece(row,col, p);
+            setPiece(row,col);
         }
     }
 }
@@ -39,7 +38,7 @@ ChessWindow::ChessWindow(QWidget *parent) :
     blackSquareStyle = getStyleSheetForColour(QColor(Qt::darkGray));
     whiteSquareStyle = getStyleSheetForColour(QColor(Qt::lightGray));
 
-    QPoint bpos(0,0);
+    Coord bpos(0,0);
     bpos = addSquare(bpos, ui->A_1);
     bpos = addSquare(bpos, ui->A_2);
     bpos = addSquare(bpos, ui->A_3);
@@ -160,41 +159,43 @@ QString ChessWindow::getStyleSheetForColour(const QColor &color)
     return style;
 }
 
-QPoint ChessWindow::addSquare(QPoint pos, class QPushButton *b)
+Coord ChessWindow::addSquare(Coord pos, class QPushButton *b)
 {
-    int x = pos.x();
-    int y = pos.y();
+    int row = pos.first;
+    int col = pos.second;
 
     // make the button checkable and connect it
     b->setCheckable(true);
     connect(b, SIGNAL(clicked()), this, SLOT(on_buttonClicked()));
     // colour the squares
-    if (y % 2){
-        if (x %2)
+    if (row % 2){
+        if (col %2)
             b->setStyleSheet(blackSquareStyle);
         else
             b->setStyleSheet(whiteSquareStyle);
     }
     else
     {
-        if (x %2)
+        if (col %2)
             b->setStyleSheet(whiteSquareStyle);
         else
             b->setStyleSheet(blackSquareStyle);
 
     }
-    Board[y][x] = b;
-    x++;
-    if (x > 7)
+    Board[row][col] = b;
+    col++;
+    if (col > 7)
     {
-        y++;
-        x=0;
+        row++;
+        col=0;
     }
-    return QPoint(x,y);
+    return Coord(row,col);
 }
 
-void ChessWindow::setPiece(int row, int column, Piece *piece)
+void ChessWindow::setPiece(int row, int column)
 {
+    Piece *piece = echec.getPiece(row, column);
+
     QPushButton *b = Board[row][column];
     QIcon &icon=PieceUnknown;
 
@@ -235,7 +236,7 @@ void ChessWindow::setPiece(int row, int column, Piece *piece)
     b->setIcon(icon);
     b->setIconSize(QSize(150,150));
 }
-QPoint ChessWindow::findSelectedButton(QPushButton *button)
+Coord ChessWindow::findSelectedButton(QPushButton *button)
 {
     for(int r = 0; r < 8; r++)
     {
@@ -243,7 +244,7 @@ QPoint ChessWindow::findSelectedButton(QPushButton *button)
         {
             if (Board[r][c] == button)
             {
-                return QPoint(r,c);
+                return Coord(r,c);
             }
         }
     }
@@ -255,10 +256,13 @@ void ChessWindow::on_buttonClicked()
     QPushButton *button = (QPushButton *)sender();
 
     if (currentlySelectedButton){
-        QPoint destination = findSelectedButton(button);
+        Coord destination = findSelectedButton(button);
 
+        printf("moving selectedPiece(%d,%d) -> (%d,%d)\n",selectedPiece->getPositionX(), selectedPiece->getPositionY(), destination.first, destination.second);
+        printf("%s\n", echec.getPiece(destination.first, destination.second)->getNom().c_str());
+        fflush(stdout);
         if (currentlySelectedButton != button){
-            if (echec.movePiece(selectedPiece, destination.x(), destination.y()))
+            if (echec.movePiece(selectedPiece, destination.first, destination.second))
             {
                 echec.switchPlayer();
             }
@@ -279,8 +283,8 @@ void ChessWindow::on_buttonClicked()
 
     printf("just write clicked\n");
     if (button->isChecked()){
-        QPoint p = findSelectedButton(button);
-        selectedPiece = echec.getPiece(p.x(), p.y());
+        Coord p = findSelectedButton(button);
+        selectedPiece = echec.getPiece(p.first, p.second);
 
         if (echec.isWhitePlayer() != selectedPiece->getEstBlanc()){
             printf("Not your turn%s\n",selectedPiece->getNom().c_str());

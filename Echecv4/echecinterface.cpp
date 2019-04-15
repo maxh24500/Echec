@@ -141,7 +141,7 @@ bool EchecInterface::movePiece(Piece *thisPiece, int positionX, int positionY)
     {
         appelTableau->listePiece[positionX][positionY] = thisPiece;
         appelTableau->listePiece[currentX][currentY]= caseVide;
-        //thisPiece->setPosition(pair<int,int>(positionX, positionY));
+        // thisPiece->setPosition(pair<int,int>(positionX, positionY));
         return true;
     }
     else

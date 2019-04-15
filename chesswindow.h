@@ -8,6 +8,7 @@ namespace Ui {
 class ChessWindow;
 }
 
+typedef std::pair<int,int> Coord;
 
 class ChessWindow : public QMainWindow
 {
@@ -40,10 +41,10 @@ private:
     QString whiteSquareStyle;
 
     class QPushButton* Board[8][8];
-    void setPiece(int row, int column, Piece *piece);
-    QPoint addSquare(QPoint pos, class QPushButton *b);
+    void setPiece(int row, int column);
+    Coord addSquare(Coord pos, class QPushButton *b);
     QString ChessWindow::getStyleSheetForColour(const QColor &color);
-    QPoint findSelectedButton(QPushButton *button);
+    Coord findSelectedButton(QPushButton *button);
 
     Piece *selectedPiece;
 
