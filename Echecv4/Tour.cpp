@@ -13,75 +13,69 @@ Tour::Tour(int id, int positionX, int positionY, bool blanc):Piece(id, positionX
     this->_enJeu = true;
 
     if (!blanc){
-        this->_nom = "tn";
+        this->_nom = "t_n";
     } else {
-        this->_nom = "tb";
+        this->_nom = "t_b";
     }
 }
 
-void Tour::mouv(int cas, int nbCase){
-
-    int positionX = this->_position.first;
-    int positionY = this->_position.second;
-
-    pair <int, int> nouvellePosition;
-
-    switch (cas) {
-
-        case 1 :
-            nouvellePosition.first = positionX;
-            nouvellePosition.second = positionY + nbCase;
-            break;
-
-        case 2 :
-            nouvellePosition.first = positionX + nbCase;
-            nouvellePosition.second = positionY;
-            break;
-
-        case 3 :
-            nouvellePosition.first = positionX;
-            nouvellePosition.second = positionY - nbCase;
-            break;
-
-        case 4 :
-            nouvellePosition.first = positionX - nbCase;
-            nouvellePosition.second = positionY;
-            break;
-    }
-    this->setPosition(nouvellePosition);
-}
-
-bool Tour::deplacement(int X, int Y)
+bool Tour::deplacement(int X, int Y, Piece *unTableau)
 {
     if (X != this->_position.first && Y != this->_position.second)
     {
-        cout << "Erreur dans le mouvement de la piece, reessayez : "<<endl;
         return false;
 
     }
     else if (X == this->_position.first && Y == this->_position.second)
     {
-        cout << "La pi�ce n'a pas boug� ! reessayez : " << endl;
         return false;
     }
     else if (X > this->_position.first && Y == this->_position.second)
     {
+		for (int i = X - 1; i > this->_position.first; i--)
+		{
+			if (unTableau->listePiece[i][Y]->getEstBlanc() == true || unTableau->listePiece[i][Y]->getEstBlanc() == false)
+			{
+				return false;
+			}
+		}
         this->_position.first = X;
         return true;
 
     }
     else if (X == this->_position.first && Y > this->_position.second)
     {
+		for (int i = Y - 1; i > this->_position.second; i--)
+		{
+			if (unTableau->listePiece[X][i]->getEstBlanc() == true || unTableau->listePiece[X][i]->getEstBlanc() == false)
+			{
+				return false;
+			}
+		}
         this->_position.second = Y;
         return true;
     }
     else if (X == this->_position.first && Y < this->_position.second)
     {
+		for (int i = Y + 1; i < this->_position.second; i++)
+		{
+			if (unTableau->listePiece[X][i]->getEstBlanc() == true || unTableau->listePiece[X][i]->getEstBlanc() == false)
+			{
+				return false;
+			}
+		}
         this->_position.second = Y;
         return true;
     }
     else if (X < this->_position.first && Y == this->_position.second)
     {
+		for (int i = X + 1; i < this->_position.first; i++)
+		{
+			if (unTableau->listePiece[i][Y]->getEstBlanc() == true || unTableau->listePiece[i][Y]->getEstBlanc() == false)
+			{
+				return false;
+			}
+		}
         this->_position.first = X;
         return true;
     }

@@ -19,7 +19,7 @@ Piece::~Piece(){
 
 }
 
-bool Piece::deplacement(int X, int Y)
+bool Piece::deplacement(int X, int Y, Piece *unTableau)
 {
 	return false;
 }

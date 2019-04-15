@@ -1,5 +1,9 @@
 #include "pch.h"
 #include "Pion.h"
+#include "Piece.h"
+#include "Cavalier.h"
+
+
 
 Pion::Pion(int id, int positionX, int positionY, bool blanc):Piece(id, positionX, positionY, blanc){
     this->_id = id;
@@ -9,65 +13,111 @@ Pion::Pion(int id, int positionX, int positionY, bool blanc):Piece(id, positionX
     this->_enJeu = true;
 
     if (!blanc){
-        this->_nom = "pio_n";
+        this->_nom = "p_n";
     } else {
-        this->_nom = "pio_b";
+        this->_nom = "p_b";
     }
 }
-
-void Pion::mouv(int cas){
-    int positionX = this->_position.first;
-    int positionY = this->_position.second;
-
-    pair <int, int> nouvellePosition;
-
-    switch (cas) {
-
-        case 1 :
-            nouvellePosition.first = positionX + 1;
-            nouvellePosition.second = positionY;
-            break;
-
-        case 2 :
-            nouvellePosition.first = positionX + 2;
-            nouvellePosition.second = positionY;
-            break;
-
-        case 3 :
-            nouvellePosition.first = positionX + 1;
-            nouvellePosition.second = positionY + 1;
-            break;
-
-        case 4 :
-            nouvellePosition.first = positionX + 1;
-            nouvellePosition.second = positionY - 1;
-            break;
-    }
-    this->setPosition(nouvellePosition);
-}
-
-
-bool Pion::deplacement(int X, int Y) {
+bool Pion::deplacement(int X, int Y, Piece *unTableau) 
+{
+	Piece *Pieceverif = new Piece();
+	if (this->getEstBlanc() == true)
+	{
 		if (X == this->_position.first + 1 && Y == this->_position.second)
 		{
-			this->_position.first = X;
-			this->_position.second = Y;
-			this->nbTour++;
-			return true;
-
+			if (unTableau->listePiece[X][Y]->getEstBlanc() == true || unTableau->listePiece[X][Y]->getEstBlanc() == false)
+			{
+				return false;
+			}
+			else
+			{
+				this->_position.first = X;
+				this->_position.second = Y;
+				this->nbTour++;
+				return true;
+			}
 		}
 		else if (this->nbTour == 0 && X == this->_position.first + 2 && Y == this->_position.second)
 		{
-			this->_position.first = X;
-			this->_position.second = Y;
-			this->nbTour++;
-			return true;
+			if (unTableau->listePiece[X][Y]->getEstBlanc() == true || unTableau->listePiece[X][Y]->getEstBlanc() == false)
+			{
+				return false;
+			}
+			else
+			{
+				this->_position.first = X;
+				this->_position.second = Y;
+				this->nbTour++;
+				return true;
+			}
 
+		}
+		else if (X == this->_position.first + 1 && Y == this->_position.second + 1 || X == this->_position.first + 1 && Y == this->_position.second - 1)
+		{
+			
+			Pieceverif = unTableau->listePiece[X][Y];
+			if (Pieceverif->getEstBlanc() == false)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
 			cout << "Erreur de mouvement, reessayez" << endl;
 			return false;
 		}
-	
+	}
+	else
+	{
+		if (X == this->_position.first - 1 && Y == this->_position.second)
+		{
+			if (unTableau->listePiece[X][Y]->getEstBlanc() == true || unTableau->listePiece[X][Y]->getEstBlanc() == false)
+			{
+				return false;
+			}
+			else
+			{
+				this->_position.first = X;
+				this->_position.second = Y;
+				this->nbTour++;
+				return true;
+			}
+
+		}
+		else if (this->nbTour == 0 && X == this->_position.first - 2 && Y == this->_position.second)
+		{
+			if (unTableau->listePiece[X][Y]->getEstBlanc() == true || unTableau->listePiece[X][Y]->getEstBlanc() == false)
+			{
+				return false;
+			}
+			else
+			{
+				this->_position.first = X;
+				this->_position.second = Y;
+				this->nbTour++;
+				return true;
+			}
+		}
+		else if (X == this->_position.first - 1 && Y == this->_position.second - 1 || X == this->_position.first - 1 && Y == this->_position.second + 1)
+		{
+			Pieceverif = unTableau->listePiece[X][Y];
+			if (Pieceverif->getEstBlanc() == true)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			cout << "Erreur de mouvement, reessayez" << endl;
+			return false;
+		}
+	}
 }
