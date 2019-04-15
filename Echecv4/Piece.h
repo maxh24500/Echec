@@ -3,9 +3,11 @@
 #include <iostream>
 #include <vector>
 
+
 using namespace std;
 
 class Piece {
+	
 protected:
     int _id;
     pair <int, int> _position;
@@ -19,10 +21,10 @@ public:
     Piece(int id, bool blanc, bool enJeu, int positionX, int positionY);
     ~Piece();
 
+	
     Piece *listePiece[8][8];
-	virtual bool deplacement(int X, int Y);
+	virtual bool deplacement(int X, int Y, Piece *unTableau);
   
-
     void afficherPlateau();
 
     int getId();
