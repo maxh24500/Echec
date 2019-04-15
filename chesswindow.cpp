@@ -200,29 +200,29 @@ void ChessWindow::setPiece(int row, int column, Piece *piece)
 
     std::string nom = piece->getNom();
 
-    if (nom == "pio_n")
+    if (nom == "p_n")
         icon = BlackPawn;
-    else if (nom == "cav_n")
+    else if (nom == "c_n")
         icon = BlackHorse;
-    else if (nom == "tn")
+    else if (nom == "t_n")
         icon = BlackCastle;
-    else if (nom == "roi_n")
+    else if (nom == "R_n")
         icon = BlackKing;
-    else if (nom == "rei_n")
+    else if (nom == "r_n")
         icon = BlackQueen;
-    else if (nom == "fou_n")
+    else if (nom == "f_n")
         icon = BlackBishop;
-    else if (nom == "pio_b")
+    else if (nom == "p_b")
         icon = WhitePawn;
-    else if (nom == "cav_b")
+    else if (nom == "c_b")
         icon = WhiteHorse;
-    else if (nom == "tb")
+    else if (nom == "t_b")
         icon = WhiteCastle;
-    else if (nom == "roi_b")
+    else if (nom == "R_b")
         icon = WhiteKing;
-    else if (nom == "rei_b")
+    else if (nom == "r_b")
         icon = WhiteQueen;
-    else if (nom == "fou_b")
+    else if (nom == "f_b")
         icon = WhiteBishop;
     else if (nom.empty())
         icon = PieceNone;
