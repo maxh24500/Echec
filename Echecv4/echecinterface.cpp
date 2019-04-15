@@ -141,15 +141,15 @@ bool EchecInterface::movePiece(Piece *thisPiece, int positionX, int positionY)
 }
 bool EchecInterface::isWhitePlayer()
 {
-    return joueurBlanc;
+    return appelTableau->getEstBlanc();
 }
 bool EchecInterface::switchPlayer()
 {
-    if (joueurBlanc)
-        joueurBlanc = false;
+    if (isWhitePlayer())
+        appelTableau->setEstBlanc(false);
     else
-        joueurBlanc = true;
-    return joueurBlanc;
+        appelTableau->setEstBlanc(true);
+    return isWhitePlayer();
 }
 
 //bool finPartie = false;

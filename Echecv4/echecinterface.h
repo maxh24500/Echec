@@ -16,7 +16,6 @@ private:
     Piece *appelTableau;
     Piece *caseVide;
     bool finPartie = false;
-    bool joueurBlanc = true;
 
 public:
     EchecInterface();

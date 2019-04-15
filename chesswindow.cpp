@@ -275,12 +275,13 @@ void ChessWindow::on_buttonClicked()
         UpdateBoard();
     }
 
-
+    printf("just write clicked\n");
     if (button->isChecked()){
         QPoint p = findSelectedButton(button);
         selectedPiece = echec.getPiece(p.x(), p.y());
 
         if (echec.isWhitePlayer() != selectedPiece->getEstBlanc()){
+            printf("Not your turn%s\n",selectedPiece->getNom().c_str());
             selectedPiece = nullptr;
             button->setChecked(false);
             return;

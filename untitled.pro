@@ -25,7 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        chesswindow.cpp \
+            chesswindow.cpp \
     Echecv4/Cavalier.cpp \
     Echecv4/Fou.cpp \
     Echecv4/main.cpp \
