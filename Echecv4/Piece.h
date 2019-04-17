@@ -14,8 +14,9 @@ protected:
     bool _blanc;
     bool _enJeu;
     string _nom;
+	string _type;
 	int nbTour = 0;
-	bool _estTour = false;
+	bool _doublePas = false;
 
 public:
 	
@@ -27,8 +28,10 @@ public:
 	
     Piece *listePiece[8][8];
 	virtual bool deplacement(int X, int Y, Piece *unTableau);
-  
+	void deplacementPlateau(int X,int Y,Piece *unPlateau);
     void afficherPlateau();
+
+	void changePion(Piece *unTableau);
 
     int getId();
     void setId(int newValue);
@@ -43,8 +46,9 @@ public:
     void setEstBlanc(bool newValue);
 
 	int getNbTour();
-
-	bool getEstTour();
+	string getType();
+	bool getDoublePas();
+	void setDoublePas(bool doublePas);
 
     bool getEnJeu();
     void setEnJeu(bool newValue);

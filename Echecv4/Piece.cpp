@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Piece.h"
 #include <iostream>
+#include "Reine.h"
+#include "Fou.h"
+#include "Tour.h"
+#include "Cavalier.h"
 
 Piece::Piece(){
 
@@ -22,6 +26,11 @@ Piece::~Piece(){
 bool Piece::deplacement(int X, int Y, Piece *unTableau)
 {
 	return false;
+}
+
+void Piece::deplacementPlateau(int X, int Y, Piece * unPlateau)
+{
+
 }
 
 int Piece::getId(){
@@ -54,9 +63,19 @@ int Piece::getNbTour()
 	return this->nbTour;
 }
 
-bool Piece::getEstTour()
+string Piece::getType()
 {
-	return this->_estTour;
+	return this->_type;
+}
+
+bool Piece::getDoublePas()
+{
+	return this->_doublePas;
+}
+
+void Piece::setDoublePas(bool doublePas)
+{
+	this->_doublePas = doublePas;
 }
 
 bool Piece::getEnJeu(){
@@ -603,4 +622,70 @@ void Piece::afficherPlateau(){
          << "           1 |" << this->listePiece[0][0]->afficherNom() << "|" << this->listePiece[0][1]->afficherNom() << "|" << this->listePiece[0][2]->afficherNom() << "|" << this->listePiece[0][3]->afficherNom() << "|" << this->listePiece[0][4]->afficherNom() << "|" << this->listePiece[0][5]->afficherNom() << "|" << this->listePiece[0][6]->afficherNom() << "|" << this->listePiece[0][7]->afficherNom() << "|" << endl
          << "             |___|___|___|___|___|___|___|___|" << endl
          << "               A | B | C | D | E | F | G | H " << endl;
+}
+
+void Piece::changePion(Piece *unTableau)
+{
+	if (this->_type == "pion" && this->_position.first == 7)
+	{
+			string choix;
+			cout << "Quelle piece souhaitez-vous avoir ? (reine,fou,tour,cavalier) : "<<endl;
+			cin >> choix;
+			if (choix == "reine" || choix == "Reine")
+			{
+				Reine *r_b = new Reine(15, this->_position.first, this->_position.second, true);
+				unTableau->listePiece[this->_position.first][this->_position.second] = r_b;
+				
+			}
+			if (choix == "fou" || choix == "Fou")
+			{
+				Fou *f_b = new Fou(15, this->_position.first, this->_position.second, true);
+				unTableau->listePiece[this->_position.first][this->_position.second] = f_b;
+
+			}
+			if (choix == "tour" || choix == "Tour")
+			{
+				Tour *t_b = new Tour(15, this->_position.first, this->_position.second, true);
+				unTableau->listePiece[this->_position.first][this->_position.second] = t_b;
+
+			}
+			if (choix == "cavalier" || choix == "Cavalier")
+			{
+				Cavalier *c_b = new Cavalier(15, this->_position.first, this->_position.second, true);
+				unTableau->listePiece[this->_position.first][this->_position.second] = c_b;
+
+			}
+		
+	}
+	else if (this->_type == "pion" && this->_position.first == 0)
+	{
+		string choix;
+		cout << "Quelle piece souhaitez-vous avoir ? (reine,fou,tour,cavalier) : " << endl;
+		cin >> choix;
+		if (choix == "reine" || choix == "Reine")
+		{
+			Reine *r_n = new Reine(15, this->_position.first, this->_position.second, false);
+			unTableau->listePiece[this->_position.first][this->_position.second] = r_n;
+
+		}
+		if (choix == "fou" || choix == "Fou")
+		{
+			Fou *f_n = new Fou(15, this->_position.first, this->_position.second, false);
+			unTableau->listePiece[this->_position.first][this->_position.second] = f_n;
+
+		}
+		if (choix == "tour" || choix == "Tour")
+		{
+			Tour *t_n = new Tour(15, this->_position.first, this->_position.second, false);
+			unTableau->listePiece[this->_position.first][this->_position.second] = t_n;
+
+		}
+		if (choix == "cavalier" || choix == "Cavalier")
+		{
+			Cavalier *c_n = new Cavalier(15, this->_position.first, this->_position.second, false);
+			unTableau->listePiece[this->_position.first][this->_position.second] = c_n;
+
+		}
+
+	}
 }

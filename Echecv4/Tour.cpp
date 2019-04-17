@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "Tour.h"
 
-Tour::Tour()
-{
-}
 
 Tour::Tour(int id, int positionX, int positionY, bool blanc):Piece(id, positionX, positionY, blanc){
     this->_id = id;
@@ -11,7 +8,7 @@ Tour::Tour(int id, int positionX, int positionY, bool blanc):Piece(id, positionX
     this->_position.second = positionY;
     this->_blanc = blanc;
     this->_enJeu = true;
-	this->_estTour = true;
+	this->_type = "tour";
 
     if (!blanc){
         this->_nom = "t_n";

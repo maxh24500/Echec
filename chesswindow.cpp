@@ -29,12 +29,11 @@ ChessWindow::ChessWindow(QWidget *parent) :
     WhiteBishop(QPixmap(":/pieces/WhiteBishop.png")),
     PieceUnknown(QPixmap(":/pieces/PieceUnknown.png")),
     PieceNone(QPixmap(":/pieces/PieceNone.png")),
-    currentlySelectedButton(nullptr),
-    selectedPiece(nullptr)
+    currentlySelectedButton(nullptr)
 {
     ui->setupUi(this);
 
-    echec.SetupBoard();
+    jeu.lancerJeu();
     blackSquareStyle = getStyleSheetForColour(QColor(Qt::darkGray));
     whiteSquareStyle = getStyleSheetForColour(QColor(Qt::lightGray));
 
@@ -194,12 +193,10 @@ Coord ChessWindow::addSquare(Coord pos, class QPushButton *b)
 
 void ChessWindow::setPiece(int row, int column)
 {
-    Piece *piece = echec.getPiece(row, column);
+    std::string nom = jeu.pieceAt(row, column);
 
     QPushButton *b = Board[row][column];
     QIcon &icon=PieceUnknown;
-
-    std::string nom = piece->getNom();
 
     if (nom == "p_n")
         icon = BlackPawn;
@@ -229,7 +226,7 @@ void ChessWindow::setPiece(int row, int column)
         icon = PieceNone;
     else
     {
-        printf("Unknown %s\n",piece->getNom().c_str());
+        printf("Unknown %s\n",nom.c_str());
         icon = PieceUnknown;
     }
 
@@ -253,22 +250,26 @@ Coord ChessWindow::findSelectedButton(QPushButton *button)
 }
 void ChessWindow::on_buttonClicked()
 {
-    QPushButton *button = (QPushButton *)sender();
+    QPushButton *button = dynamic_cast<QPushButton *>(sender());
+
+    if (button == nullptr)
+    {
+        return;
+    }
 
     if (currentlySelectedButton){
         Coord destination = findSelectedButton(button);
 
-        printf("moving selectedPiece(%d,%d) -> (%d,%d)\n",selectedPiece->getPositionX(), selectedPiece->getPositionY(), destination.first, destination.second);
-        printf("%s\n", echec.getPiece(destination.first, destination.second)->getNom().c_str());
+        printf("moving selectedPiece(%d,%d) -> (%d,%d)\n",source.first, source.second , destination.first, destination.second);
+        printf("%s\n", jeu.pieceAt(destination.first, destination.second).c_str());
         fflush(stdout);
         if (currentlySelectedButton != button){
-            if (echec.movePiece(selectedPiece, destination.first, destination.second))
+            if (jeu.deplacement(source.first, source.second, destination.first, destination.second))
             {
-                echec.switchPlayer();
+                //echec.switchPlayer();
             }
         }
         currentlySelectedButton = nullptr;
-        selectedPiece = nullptr;
 
         for(int r = 0; r < 8; r++)
         {
@@ -283,20 +284,19 @@ void ChessWindow::on_buttonClicked()
 
     printf("just write clicked\n");
     if (button->isChecked()){
-        Coord p = findSelectedButton(button);
-        selectedPiece = echec.getPiece(p.first, p.second);
+        source = findSelectedButton(button);
 
-        if (echec.isWhitePlayer() != selectedPiece->getEstBlanc()){
-            printf("Not your turn%s\n",selectedPiece->getNom().c_str());
-            selectedPiece = nullptr;
-            button->setChecked(false);
-            return;
-        }
-        if (selectedPiece->getNom().empty()){
-            selectedPiece = nullptr;
-            button->setChecked(false);
-            return;
-        }
+//        if (echec.isWhitePlayer() != selectedPiece->getEstBlanc()){
+//            printf("Not your turn%s\n",selectedPiece->getNom().c_str());
+//            selectedPiece = nullptr;
+//            button->setChecked(false);
+//            return;
+//        }
+//        if (selectedPiece->getNom().empty()){
+//            selectedPiece = nullptr;
+//            button->setChecked(false);
+//            return;
+//        }
         currentlySelectedButton = button;
         printf("b clicked\n");fflush(stdout);
 

@@ -1,8 +1,9 @@
 #ifndef CHESSWINDOW_H
 #define CHESSWINDOW_H
 
+
 #include <QMainWindow>
-#include "Echecv4/echecinterface.h"
+#include "Echecv4/Jeu.h"
 
 namespace Ui {
 class ChessWindow;
@@ -15,13 +16,13 @@ class ChessWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit ChessWindow(QWidget *parent = 0);
+    explicit ChessWindow(QWidget *parent = nullptr);
     ~ChessWindow();
 
 private:
     Ui::ChessWindow *ui;
 
-    EchecInterface echec;
+    Jeu jeu;
     QIcon BlackCastle;
     QIcon BlackHorse;
     QIcon BlackKing;
@@ -43,10 +44,10 @@ private:
     class QPushButton* Board[8][8];
     void setPiece(int row, int column);
     Coord addSquare(Coord pos, class QPushButton *b);
-    QString ChessWindow::getStyleSheetForColour(const QColor &color);
+    QString getStyleSheetForColour(const QColor &color);
     Coord findSelectedButton(QPushButton *button);
 
-    Piece *selectedPiece;
+    Coord source;
 
     class QPushButton *currentlySelectedButton;
     void UpdateBoard();

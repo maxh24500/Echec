@@ -7,6 +7,7 @@ Cavalier::Cavalier(int id, int positionX, int positionY, bool blanc):Piece(id, p
     this->_position.second = positionY;
     this->_blanc = blanc;
     this->_enJeu = true;
+	this->_type = "cavalier";
 
     if (!blanc){
         this->_nom = "c_n";

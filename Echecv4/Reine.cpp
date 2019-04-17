@@ -7,6 +7,7 @@ Reine::Reine(int id, int positionX, int positionY, bool blanc):Piece(id, positio
     this->_position.second = positionY;
     this->_blanc = blanc;
     this->_enJeu = true;
+	this->_type = "reine";
 
     if (!blanc){
         this->_nom = "r_n";
@@ -18,8 +19,6 @@ Reine::Reine(int id, int positionX, int positionY, bool blanc):Piece(id, positio
 
 bool Reine::deplacement(int X, int Y, Piece *unTableau) 
 {
-	
-		//MOUVEMENT DU FOU
 	int total1;
 	int total2;
 	total1 = X - this->_position.first;
@@ -35,63 +34,94 @@ bool Reine::deplacement(int X, int Y, Piece *unTableau)
 
 	if (total1 == total2)
 	{
+		//- et -
 		if (X < this->_position.first && Y < this->_position.second)
 		{
+			int j = Y + 1;
 			for (int i = X + 1; i < this->_position.first; i++)
 			{
-				for (int j = Y + 1; j < this->_position.second; j++)
-				{
-					if (unTableau->listePiece[i][j]->getEstBlanc() == true || unTableau->listePiece[i][j]->getEstBlanc() == false)
-					{
-						return false;
-					}
-				}
-			}
-		}
-		if (X > this->_position.first && Y < this->_position.second)
-		{
-			for (int i = X - 1; i > this->_position.first; i--)
-			{
-				for (int j = Y + 1; j < this->_position.second; j++)
-				{
-					if (unTableau->listePiece[i][j]->getEstBlanc() == true || unTableau->listePiece[i][j]->getEstBlanc() == false)
-					{
-						return false;
-					}
-				}
-			}
-		}
-		if (X < this->_position.first && Y > this->_position.second)
-		{
-			for (int i = X + 1; i < this->_position.first; i++)
-			{
-				for (int j = Y - 1; j > this->_position.second; j--)
-				{
-					if (unTableau->listePiece[i][j]->getEstBlanc() == true || unTableau->listePiece[i][j]->getEstBlanc() == false)
-					{
-						return false;
-					}
-				}
-			}
-		}
-		if (X > this->_position.first && Y > this->_position.second)
-		{
-			for (int i = X - 1; i > this->_position.first; i--)
-			{
-				for (int j = Y - 1; j > this->_position.second; j--)
-				{
-					if (unTableau->listePiece[i][j]->getEstBlanc() == true || unTableau->listePiece[i][j]->getEstBlanc() == false)
-					{
-						return false;
-					}
-				}
-			}
-		}
-		this->_position.first = X;
-		this->_position.second = Y;
-		return true;
-	}
 
+				if (unTableau->listePiece[i][j]->getEnJeu() == true)
+				{
+					return false;
+				}
+
+				if (j < this->_position.second)
+				{
+					j++;
+				}
+			}
+			this->_position.first = X;
+			this->_position.second = Y;
+			return true;
+
+		}
+
+		//+ et -
+		else if (X > this->_position.first && Y < this->_position.second)
+		{
+			int j = Y + 1;
+			for (int i = X - 1; i > this->_position.first; i--)
+			{
+
+				if (unTableau->listePiece[i][j]->getEnJeu() == true)
+				{
+					return false;
+				}
+
+				if (j < this->_position.second)
+				{
+					j++;
+				}
+			}
+			this->_position.first = X;
+			this->_position.second = Y;
+			return true;
+		}
+		//- et +
+		else if (X < this->_position.first && Y > this->_position.second)
+		{
+			int j = Y - 1;
+			for (int i = X + 1; i < this->_position.first; i++)
+			{
+
+				if (unTableau->listePiece[i][j]->getEnJeu() == true)
+				{
+					return false;
+				}
+
+				if (j > this->_position.second)
+				{
+					j--;
+				}
+			}
+			this->_position.first = X;
+			this->_position.second = Y;
+			return true;
+
+		}
+		//+ et +
+		else if (X > this->_position.first && Y > this->_position.second)
+		{
+			int j = Y - 1;
+			for (int i = X - 1; i > this->_position.first; i--)
+			{
+
+				if (unTableau->listePiece[i][j]->getEnJeu() == true)
+				{
+					return false;
+				}
+
+				if (j > this->_position.second)
+				{
+					j--;
+				}
+			}
+			this->_position.first = X;
+			this->_position.second = Y;
+			return true;
+		}
+	}
 		//MOUVEMENT DE LA TOUR
 	if (X != this->_position.first && Y != this->_position.second)
 	{
@@ -152,3 +182,4 @@ bool Reine::deplacement(int X, int Y, Piece *unTableau)
 	}
 	
 }
+

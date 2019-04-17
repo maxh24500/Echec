@@ -35,7 +35,7 @@ SOURCES += \
     Echecv4/Reine.cpp \
     Echecv4/Roi.cpp \
     Echecv4/Tour.cpp \
-    Echecv4/echecinterface.cpp
+    Echecv4/Jeu.cpp
 
 HEADERS += \
         chesswindow.h \
@@ -47,7 +47,7 @@ HEADERS += \
     Echecv4/Reine.h \
     Echecv4/Roi.h \
     Echecv4/Tour.h \
-    Echecv4/echecinterface.h
+    Echecv4/Jeu.h
 
 FORMS += \
         chesswindow.ui
