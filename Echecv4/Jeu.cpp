@@ -250,7 +250,45 @@ std::string Jeu::pieceAt(int X, int Y)
 	}
 	return appelTableau->listePiece[X][Y]->getNom();
 }
+
+bool Jeu::canPlay(int X, int Y)
+{
+    laPiece1 = appelTableau->listePiece[X][Y];
+
+    if (laPiece1==caseVide)
+    {
+        return false;
+    }
+
+    if (Joueur1 == true)
+    {
+        Blanc = laPiece1->getEstBlanc();
+        if (Blanc == false)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    if (Joueur1 == false)
+    {
+        Blanc = laPiece1->getEstBlanc();
+        if (Blanc == true)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool Jeu::deplacement(int fromX, int fromY, int toX, int toY)
+
 {
     if (!finPartie) {
         if (Joueur1 == true)

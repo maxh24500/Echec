@@ -154,10 +154,12 @@ QString ChessWindow::getStyleSheetForColour(const QColor &color)
     style += "    background-color: #f0f\n";
     style += "}\n";
 
-    //    printf("%s",style.toLatin1().data());
     return style;
 }
 
+
+//adds all buttons to class (code):
+//takes care of coordinates, connecting to event handler, grid colours
 Coord ChessWindow::addSquare(Coord pos, class QPushButton *b)
 {
     int row = pos.first;
@@ -168,6 +170,7 @@ Coord ChessWindow::addSquare(Coord pos, class QPushButton *b)
     connect(b, SIGNAL(clicked()), this, SLOT(on_buttonClicked()));
     // colour the squares
     if (row % 2){
+                //modulus 2 (even/odd)
         if (col %2)
             b->setStyleSheet(blackSquareStyle);
         else
@@ -226,13 +229,14 @@ void ChessWindow::setPiece(int row, int column)
         icon = PieceNone;
     else
     {
-        printf("Unknown %s\n",nom.c_str());
         icon = PieceUnknown;
     }
 
     b->setIcon(icon);
     b->setIconSize(QSize(150,150));
 }
+
+//find coord of button clicked
 Coord ChessWindow::findSelectedButton(QPushButton *button)
 {
     for(int r = 0; r < 8; r++)
@@ -259,14 +263,14 @@ void ChessWindow::on_buttonClicked()
 
     if (currentlySelectedButton){
         Coord destination = findSelectedButton(button);
-
-        printf("moving selectedPiece(%d,%d) -> (%d,%d)\n",source.first, source.second , destination.first, destination.second);
-        printf("%s\n", jeu.pieceAt(destination.first, destination.second).c_str());
-        fflush(stdout);
         if (currentlySelectedButton != button){
             if (jeu.deplacement(source.first, source.second, destination.first, destination.second))
             {
-                //echec.switchPlayer();
+                //pieceMovedOk
+            }
+            else
+            {
+                //showErrorMsg
             }
         }
         currentlySelectedButton = nullptr;
@@ -280,28 +284,17 @@ void ChessWindow::on_buttonClicked()
             }
         }
         UpdateBoard();
+        return;
     }
 
-    printf("just write clicked\n");
     if (button->isChecked()){
         source = findSelectedButton(button);
 
-//        if (echec.isWhitePlayer() != selectedPiece->getEstBlanc()){
-//            printf("Not your turn%s\n",selectedPiece->getNom().c_str());
-//            selectedPiece = nullptr;
-//            button->setChecked(false);
-//            return;
-//        }
-//        if (selectedPiece->getNom().empty()){
-//            selectedPiece = nullptr;
-//            button->setChecked(false);
-//            return;
-//        }
+        if (!jeu.canPlay(source.first, source.second))
+        {
+            button->setChecked(false);
+            return;
+        }
         currentlySelectedButton = button;
-        printf("b clicked\n");fflush(stdout);
-
-
     }
-    else
-        printf("b clicked but not checked\n");fflush(stdout);
 }

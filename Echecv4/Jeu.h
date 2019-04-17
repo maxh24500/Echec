@@ -24,5 +24,6 @@ public:
 	~Jeu();
 	std::string pieceAt(int X, int Y);
 	bool deplacement(int fromX,int fromY, int toX, int toY);
+    bool canPlay(int X, int Y);
 	void lancerJeu();
 };
