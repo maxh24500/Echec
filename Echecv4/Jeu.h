@@ -18,6 +18,8 @@ class Jeu
 
     bool enJeu;
     bool Joueur1;
+    bool whiteWins;
+    bool blackWins;
 
 public:
 	Jeu();
@@ -26,4 +28,8 @@ public:
 	bool deplacement(int fromX,int fromY, int toX, int toY);
     bool canPlay(int X, int Y);
 	void lancerJeu();
+
+    bool isFinPartie();
+    bool isWhiteWins();
+    bool isBlackwins();
 };

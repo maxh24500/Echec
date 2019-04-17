@@ -10,6 +10,22 @@ void ChessWindow::UpdateBoard()
             setPiece(row,col);
         }
     }
+    if (jeu.isFinPartie())
+    {
+        ui->winnerText->setVisible(true);
+        if (jeu.isWhiteWins())
+        {
+            ui->winnerText->setText("White Wins");
+        }
+        else
+        {
+            ui->winnerText->setText("Black Wins");
+        }
+    }
+    else
+    {
+        ui->winnerText->setVisible(false);
+    }
 }
 
 ChessWindow::ChessWindow(QWidget *parent) :

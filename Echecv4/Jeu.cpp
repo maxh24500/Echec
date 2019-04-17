@@ -121,125 +121,14 @@ void Jeu::lancerJeu() {
 	}
 
     finPartie = false;
+    whiteWins = false;
+    blackWins = false;
     Blanc = true;
     laPiece1 = new Piece();
     laPiece2 = new Piece();
 
     enJeu = false;
     Joueur1 = true;
-#if 0
-	while (!finPartie) {
-		while (Joueur1 == true)
-		{
-			//JOUEUR BLANC
-			cout << "c'est au tour du joueur Blanc" << endl;
-			//AFFICHAGE DU PLATEAU
-			appelTableau->afficherPlateau();
-//			//VERIF ECHEC
-//			R_b->msgEchec(appelTableau, true);
-			//SAISIE PIECE A DEPLACER
-			cout << "Saisir la case de la piece a deplacer : " << endl;
-			cin >> choix;
-			//TRANSFORMATION EN CELLULE
-			cellBase = laPiece1->platToCell(choix);
-			//INITIALISATION DE LA PIECE 1
-			laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
-			Blanc = laPiece1->getEstBlanc();
-			//TANT QUE C'EST UNE PIECE D'UNE AUTRE COULEUR...
-			while (Blanc == false || appelTableau->listePiece[cellBase.first][cellBase.second] == caseVide)
-			{
-				cout << "Erreur, vous ne possedez pas cette piece" << endl;
-				appelTableau->afficherPlateau();
-				cout << "Saisir la case de la piece a deplacer : " << endl;
-				cin >> choix;
-				cellBase = laPiece1->platToCell(choix);
-				laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
-				Blanc = laPiece1->getEstBlanc();
-			}
-			//CASE D'ARRIVE
-			cout << "Saisir la case d'arrivee : " << endl;
-			cin >> choix;
-			//TRANSFORMATION
-			cellArriv = laPiece2->platToCell(choix);
-			//INITIALISATION PIECE 2 ARRIVE
-			laPiece2 = appelTableau->listePiece[cellArriv.first][cellArriv.second];
-
-
-			enJeu = laPiece2->getEnJeu();
-			//SOIT CASE VIDE SOIT BOUFFE
-			if (enJeu == false || laPiece2->getEstBlanc() != Blanc) {
-				bool mouvAutorise;
-				mouvAutorise = laPiece1->deplacement(cellArriv.first, cellArriv.second, appelTableau);
-				//MOUVEMENT DE LA PIECE POSSIBLE
-				if (mouvAutorise == true) {
-					appelTableau->listePiece[cellBase.first][cellBase.second] = caseVide;
-					appelTableau->listePiece[cellArriv.first][cellArriv.second] = laPiece1;
-					laPiece1->changePion(appelTableau);
-					Joueur1 = false;
-				}
-				else {
-					cout << "Erreur : mouvement non-autorise : ";
-				}
-			}
-			else {
-				cout << "Erreur : case selectionnee prise par une de vos pieces : ";
-			}
-		}
-
-		//JOUEUR NOIR
-		while (Joueur1 == false)
-		{
-			cout << "c'est au tour du joueur Noir" << endl;
-
-			appelTableau->afficherPlateau();
-
-			R_b->msgEchec(appelTableau, false);
-			cout << "Saisir la case de la piece a deplacer : " << endl;
-			cin >> choix;
-			cellBase = laPiece1->platToCell(choix);
-			laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
-			Blanc = laPiece1->getEstBlanc();
-
-			while (Blanc == true || appelTableau->listePiece[cellBase.first][cellBase.second] == caseVide)
-			{
-				cout << "Erreur, vous ne possedez pas cette piece" << endl;
-				appelTableau->afficherPlateau();
-				cout << "Saisir la case de la piece a deplacer : " << endl;
-				cin >> choix;
-				cellBase = laPiece1->platToCell(choix);
-				laPiece1 = appelTableau->listePiece[cellBase.first][cellBase.second];
-				Blanc = laPiece1->getEstBlanc();
-			}
-
-			cout << "Saisir la case d'arrivee : " << endl;
-			cin >> choix;
-
-			cellArriv = laPiece2->platToCell(choix);
-
-			laPiece2 = appelTableau->listePiece[cellArriv.first][cellArriv.second];
-
-			enJeu = false;
-			enJeu = laPiece2->getEnJeu();
-
-			if (enJeu == false || laPiece2->getEstBlanc() != Blanc) {
-				bool mouvAutorise;
-				mouvAutorise = laPiece1->deplacement(cellArriv.first, cellArriv.second, appelTableau);
-				if (mouvAutorise == true) {
-					appelTableau->listePiece[cellBase.first][cellBase.second] = caseVide;
-					appelTableau->listePiece[cellArriv.first][cellArriv.second] = laPiece1;
-					laPiece1->changePion(appelTableau);
-					Joueur1 = true;
-				}
-				else {
-					cout << "Erreur : mouvement non-autorise : ";
-				}
-			}
-			else {
-				cout << "Erreur : case selectionnee prise par une de vos pieces : ";
-			}
-		}
-	}
-#endif
 
 }
 std::string Jeu::pieceAt(int X, int Y)
@@ -314,6 +203,11 @@ bool Jeu::deplacement(int fromX, int fromY, int toX, int toY)
                 mouvAutorise = laPiece1->deplacement(toX, toY, appelTableau);
                 //MOUVEMENT DE LA PIECE POSSIBLE
                 if (mouvAutorise == true) {
+                    if (laPiece2->getNom()=="R_n")
+                    {
+                        whiteWins = true;
+                        finPartie = true;
+                    }
                     appelTableau->listePiece[fromX][fromY] = caseVide;
                     appelTableau->listePiece[toX][toY] = laPiece1;
                     laPiece1->changePion(appelTableau);
@@ -352,6 +246,11 @@ bool Jeu::deplacement(int fromX, int fromY, int toX, int toY)
                 bool mouvAutorise;
                 mouvAutorise = laPiece1->deplacement(toX, toY, appelTableau);
                 if (mouvAutorise == true) {
+                    if (laPiece1->getNom()=="R_b")
+                    {
+                        blackWins = true;
+                        finPartie = true;
+                    }
                     appelTableau->listePiece[fromX][fromY] = caseVide;
                     appelTableau->listePiece[toX][toY] = laPiece1;
                     laPiece1->changePion(appelTableau);
@@ -370,4 +269,16 @@ bool Jeu::deplacement(int fromX, int fromY, int toX, int toY)
         }
     }
     return false;
+}
+bool Jeu::isFinPartie()
+{
+    return finPartie;
+}
+bool Jeu::isWhiteWins()
+{
+    return whiteWins;
+}
+bool Jeu::isBlackwins()
+{
+    return blackWins;
 }
