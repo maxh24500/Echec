@@ -10,6 +10,15 @@
 class Jeu
 {
 	Piece* appelTableau;
+    bool finPartie;
+    bool Blanc;
+    Piece* laPiece1;
+    Piece* laPiece2;
+    Piece* caseVide;
+
+    bool enJeu;
+    bool Joueur1;
+
 public:
 	Jeu();
 	~Jeu();

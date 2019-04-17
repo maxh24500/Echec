@@ -14,7 +14,7 @@ Jeu::~Jeu()
 
 void Jeu::lancerJeu() {
 	appelTableau = new Piece();
-	Piece* caseVide = new Piece();
+    caseVide = new Piece();
 	caseVide->setEnJeu(false);
 
 
@@ -120,20 +120,13 @@ void Jeu::lancerJeu() {
 		}
 	}
 
-	bool finPartie = false;
-	bool Blanc = true;
+    finPartie = false;
+    Blanc = true;
+    laPiece1 = new Piece();
+    laPiece2 = new Piece();
 
-	string choix;
-
-	pair<int, int> cellBase;
-	pair<int, int> cellArriv;
-
-	Piece* laPiece1 = new Piece();
-	Piece* laPiece2 = new Piece();
-
-	bool enJeu = false;
-	bool Joueur1 = true;
-
+    enJeu = false;
+    Joueur1 = true;
 #if 0
 	while (!finPartie) {
 		while (Joueur1 == true)
@@ -259,5 +252,84 @@ std::string Jeu::pieceAt(int X, int Y)
 }
 bool Jeu::deplacement(int fromX, int fromY, int toX, int toY)
 {
-	return false;
+    if (!finPartie) {
+        if (Joueur1 == true)
+        {
+            //JOUEUR BLANC
+            //INITIALISATION DE LA PIECE 1
+            laPiece1 = appelTableau->listePiece[fromX][fromY];
+            Blanc = laPiece1->getEstBlanc();
+            //TANT QUE C'EST UNE PIECE D'UNE AUTRE COULEUR...
+            if (Blanc == false || appelTableau->listePiece[fromX][fromY] == caseVide)
+            {
+                return false;
+            }
+            //CASE D'ARRIVE
+            //INITIALISATION PIECE 2 ARRIVE
+            laPiece2 = appelTableau->listePiece[toX][toY];
+
+
+            enJeu = laPiece2->getEnJeu();
+            //SOIT CASE VIDE SOIT BOUFFE
+            if (enJeu == false || laPiece2->getEstBlanc() != Blanc) {
+                bool mouvAutorise;
+                mouvAutorise = laPiece1->deplacement(toX, toY, appelTableau);
+                //MOUVEMENT DE LA PIECE POSSIBLE
+                if (mouvAutorise == true) {
+                    appelTableau->listePiece[fromX][fromY] = caseVide;
+                    appelTableau->listePiece[toX][toY] = laPiece1;
+                    laPiece1->changePion(appelTableau);
+                    Joueur1 = false;
+
+                    return true;
+                }
+                else {
+                    cout << "Erreur : mouvement non-autorise : ";
+                    return false;
+                }
+            }
+            else {
+                cout << "Erreur : case selectionnee prise par une de vos pieces : ";
+                return false;
+            }
+        }
+
+        //JOUEUR NOIR
+        if (Joueur1 == false)
+        {
+            laPiece1 = appelTableau->listePiece[fromX][fromY];
+            Blanc = laPiece1->getEstBlanc();
+
+            if (Blanc == true || appelTableau->listePiece[fromX][fromY] == caseVide)
+            {
+                return false;
+            }
+
+            laPiece2 = appelTableau->listePiece[toX][toY];
+
+            enJeu = false;
+            enJeu = laPiece2->getEnJeu();
+
+            if (enJeu == false || laPiece2->getEstBlanc() != Blanc) {
+                bool mouvAutorise;
+                mouvAutorise = laPiece1->deplacement(toX, toY, appelTableau);
+                if (mouvAutorise == true) {
+                    appelTableau->listePiece[fromX][fromY] = caseVide;
+                    appelTableau->listePiece[toX][toY] = laPiece1;
+                    laPiece1->changePion(appelTableau);
+                    Joueur1 = true;
+                    return true;
+                }
+                else {
+                    cout << "Erreur : mouvement non-autorise : ";
+                    return false;
+                }
+            }
+            else {
+                cout << "Erreur : case selectionnee prise par une de vos pieces : ";
+                return false;
+            }
+        }
+    }
+    return false;
 }
